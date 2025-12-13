@@ -47,7 +47,7 @@ export default function Navbar() {
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/signup" className="px-6 py-2.5 text-xs border-2 border-pink-300/20 h-fit text-pink-300 rounded-full hover:bg-pink-300 hover:text-red-900 transition-all duration-200 font-medium" > Sign Up </Link>
+            <Link href="/register" className="px-6 py-2.5 text-xs border-2 border-pink-300/20 h-fit text-pink-300 rounded-full hover:bg-pink-300 hover:text-red-900 transition-all duration-200 font-medium" > Sign Up </Link>
             <Link href="/login" className="px-6 py-2.5 text-xs border-2 bg-amber-100 text-red-900 rounded-full hover:bg-amber-200 transition-all duration-200 font-medium shadow-md" > Login </Link>
           </div>
 
