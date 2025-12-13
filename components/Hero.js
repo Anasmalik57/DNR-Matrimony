@@ -31,11 +31,11 @@ export default function Hero() {
 
             {/* Main Heading */}
             <div className="space-y-4">
-              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-serif text-gray-900 leading-tight">
+              <h1 className="text-5xl lg:text-6xl  font-serif text-gray-900 leading-tight">
                 Find Your Perfect
               </h1>
-              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-serif text-gray-900 leading-tight">
-                Telugu Match in Calicut
+              <h1 className="text-5xl lg:text-6xl  font-serif text-gray-900 leading-tight">
+                Telugu Match in Aandra & Telangana
               </h1>
             </div>
 

@@ -46,7 +46,7 @@ export default function LoginPage() {
         });
 
         setTimeout(() => {
-          router.push("/admin/registrations/page.js");
+          router.push("/admin/registrations");
         }, 3000);
       } else {
         console.error("Login failed: Invalid credentials");
@@ -61,9 +61,9 @@ export default function LoginPage() {
   };
 
   return (
-    <>
+    <div className="min-h-screen grid place-items-center bg-linear-to-tl from-[#FFF0DD] to-[#f7dfc2]">
       {/* Login Form Card */}
-      <div className="bg-white min-h-screen rounded-3xl shadow-2xl p-8 lg:p-12 max-w-md mx-auto">
+      <div className="bg-white min-w-xl rounded-3xl shadow-2xl p-8 lg:p-12 max-w-md mx-auto">
         <div className="space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-800">Admin Login</h2>
@@ -73,7 +73,7 @@ export default function LoginPage() {
           {/* Email Field */}
           <div>
             <label className="block text-gray-700 font-medium mb-2">
-              Email Address <span className="text-teal-600">*</span>
+              Email Address <span className="text-rose-600">*</span>
             </label>
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -83,7 +83,7 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="admin12@mail.com"
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
                 disabled={loading}
               />
             </div>
@@ -92,7 +92,7 @@ export default function LoginPage() {
           {/* Password Field */}
           <div>
             <label className="block text-gray-700 font-medium mb-2">
-              Password <span className="text-teal-600">*</span>
+              Password <span className="text-rose-600">*</span>
             </label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
                 disabled={loading}
               />
             </div>
@@ -112,7 +112,7 @@ export default function LoginPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-linear-to-r from-teal-700 to-teal-800 text-white py-4 rounded-full font-semibold text-lg hover:from-teal-800 hover:to-teal-900 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full cursor-pointer bg-rose-800 text-white py-4 rounded-full font-semibold text-lg hover:from-rose-900 hover:to-rose-900 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {loading ? "Logging in..." : "Login"}
             {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
@@ -124,6 +124,6 @@ export default function LoginPage() {
             </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }
