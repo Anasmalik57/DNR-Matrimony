@@ -46,7 +46,7 @@ export default function LoginPage() {
         });
 
         setTimeout(() => {
-          router.push("/admin/registrations");
+          router.push("/admin/profiles");
         }, 3000);
       } else {
         console.error("Login failed: Invalid credentials");
