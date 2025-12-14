@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Twitter, Instagram, Mail, Phone } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const quickLinks = [
   { href: "/about", label: "About Us" },
@@ -30,9 +30,10 @@ const socialLinks = [
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const router = useRouter()
+  const pathname = usePathname()
 
   return (
-    <footer className="bg-linear-to-br from-rose-900 via-rose-800 to-rose-900">
+    <footer className={`bg-linear-to-br from-rose-900 via-rose-800 to-rose-900 ${pathname.startsWith("/admin") ? "hidden": ""}`}>
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">

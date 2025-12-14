@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Jost } from "next/font/google";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -19,9 +20,10 @@ const jost = Jost({
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname()
 
   return (
-    <nav className="bg-linear-to-r from-red-900 via-red-800 to-red-900 shadow-xl shadow-red-900/30">
+    <nav className={`bg-linear-to-r from-red-900 via-red-800 to-red-900 shadow-xl shadow-red-900/30 ${pathname.startsWith("/admin") ? "hidden": ""}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div className="flex justify-between items-center">
           {/* Logo */}
