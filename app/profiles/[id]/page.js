@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Phone, MapPin, Briefcase, DollarSign, Heart, User, Users, ArrowLeft } from "lucide-react";
+import { MapPin, Briefcase, DollarSign, Heart, User, Users } from "lucide-react";
 import { demoProfiles } from "@/components/DemoData/AdminSideData";
 
 const ProfileDetailPage = () => {
@@ -112,7 +112,7 @@ const handleEnquireNow = () => {
               <div className="px-6 pb-6 mt-4">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-1">{profile.fullName}</h2>
-                  {/* <p className="text-gray-500 text-sm">@{profile.fullName.toLowerCase().replace(/\s+/g, '')}</p> */}
+                  <p className={`text-gray-500 text-sm ${profile?.status.toLowerCase() === "available" ? "text-green-500" : "text-red-500"}`}>{profile.status}</p>
                 </div>
 
                 <div className="space-y-3">

@@ -10,7 +10,6 @@ import CreateProfileModal from "@/components/Modals/CreateProfileModal";
 const AdminProfiles = () => {
   const router = useRouter();
   const [profiles, setProfiles] = useState(demoProfiles);
-  const [searchTerm, setSearchTerm] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -22,7 +21,7 @@ const AdminProfiles = () => {
   const handleShare = (enq) => {
     navigator.share({
       title: enq.fullName,
-      url: `${window.location.href}/${enq?.id}`,
+      url: `${window.location.href.replace('/admin', '')}/${enq?.id}`,
     });
   };
 
@@ -53,12 +52,7 @@ const AdminProfiles = () => {
     }
   };
 
-  const filteredProfiles = profiles.filter(
-    (enq) =>
-      enq.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      enq.phone.includes(searchTerm) ||
-      enq.city.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+ 
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black p-6">
@@ -72,26 +66,17 @@ const AdminProfiles = () => {
                 Manage and track all profiles
               </p>
             </div>
-            <button
+            
+          </div>
+
+          {/* Create button */}
+         <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-linear-to-r from-red-600 via-red-700 to-red-800 text-white rounded-lg font-semibold hover:from-green-700 hover:to-green-600 transition-all duration-200 shadow-lg hover:shadow-green-500/25"
+              className="flex items-center gap-2 px-4 py-2.5 bg-linear-to-r from-red-600 via-red-700 to-red-800 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-600 cursor-pointer transition-all duration-200 shadow-lg hover:shadow-red-500/25"
             >
               <Plus className="size-4" />
               Create New
             </button>
-          </div>
-
-          {/* Search Bar */}
-          <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search by name, phone, city..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-900/50 border border-gray-800 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-gray-700 focus:ring-1 focus:ring-gray-700 transition-all"
-            />
-          </div>
         </div>
 
         {/* Stats Cards */}
@@ -148,7 +133,7 @@ const AdminProfiles = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredProfiles.map((enq, index) => (
+                {profiles.map((enq, index) => (
                   <tr
                     key={enq.id}
                     className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors group"
@@ -222,7 +207,7 @@ const AdminProfiles = () => {
                     </td>
                   </tr>
                 ))}
-                {filteredProfiles.length === 0 && (
+                {profiles.length === 0 && (
                   <tr>
                     <td colSpan="10" className="px-6 py-16 text-center">
                       <div className="flex flex-col items-center gap-2">
@@ -243,10 +228,10 @@ const AdminProfiles = () => {
         </div>
 
         {/* Footer Info */}
-        {filteredProfiles.length > 0 && (
+        {profiles.length > 0 && (
           <div className="flex items-center justify-between text-sm text-gray-400 px-2">
             <p>
-              Showing {filteredProfiles.length} of {profiles.length} profiles
+              Showing {profiles.length} of {profiles.length} profiles
             </p>
           </div>
         )}

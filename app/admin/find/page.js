@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Filter, X, ChevronDown, Phone, MapPin } from "lucide-react";
+import { Search, ChevronDown, Phone, MapPin } from "lucide-react";
 import { demoProfiles } from "@/components/DemoData/AdminSideData";
 
 const FindComponent = () => {
   const [profiles] = useState(demoProfiles);
-  const [showFilters, setShowFilters] = useState(false);
   
   // Filter states
   const [filters, setFilters] = useState({
@@ -19,22 +18,10 @@ const FindComponent = () => {
 
   // Get unique values for dropdowns
   const uniqueGenders = [...new Set(profiles.map(p => p.gender))];
-  const uniqueCastes = [...new Set(profiles.map(p => p.caste))];
   const uniqueCities = [...new Set(profiles.map(p => p.city))];
-  const religions = ["Hindu", "Muslim", "Christian", "Sikh", "Buddhist", "Jain", "Other"];
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const clearFilters = () => {
-    setFilters({
-      search: "",
-      minAge: "",
-      maxAge: "",
-      gender: "",
-      city: "",
-    });
   };
 
   const filteredProfiles = profiles.filter(profile => {
@@ -49,7 +36,6 @@ const FindComponent = () => {
     return matchSearch && matchMinAge && matchMaxAge && matchGender && matchCaste && matchReligion && matchCity;
   });
 
-  const activeFiltersCount = Object.values(filters).filter(v => v !== "").length;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black p-6">
@@ -74,34 +60,7 @@ const FindComponent = () => {
           </div>
         </div>
 
-        {/* Filter Toggle Button */}
-        <div className="flex items-center justify-between">
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-red-950/50 to-red-900/50 border border-red-900/30 rounded-lg text-sm font-medium text-red-300 hover:from-red-950/70 hover:to-red-900/70 transition-all"
-          >
-            <Filter className="size-4" />
-            <span>Filters</span>
-            {activeFiltersCount > 0 && (
-              <span className="ml-1 px-2 py-0.5 bg-red-600 text-white text-xs rounded-full">
-                {activeFiltersCount}
-              </span>
-            )}
-          </button>
 
-          {activeFiltersCount > 0 && (
-            <button
-              onClick={clearFilters}
-              className="inline-flex items-center gap-2 px-3 py-2 text-sm text-gray-400 hover:text-white transition-colors"
-            >
-              <X className="size-4" />
-              <span>Clear all</span>
-            </button>
-          )}
-        </div>
-
-        {/* Filters Panel */}
-        {showFilters && (
           <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Min Age */}
@@ -168,7 +127,7 @@ const FindComponent = () => {
               </div>
             </div>
           </div>
-        )}
+       
 
         {/* Results Count */}
         <div className="flex items-center justify-between">
