@@ -1,4 +1,4 @@
-import { Shield, DollarSign, Users, CheckCircle, AlertCircle, Sparkles } from "lucide-react";
+import { Shield, DollarSign, Users, CheckCircle, Sparkles, FingerprintPattern } from "lucide-react";
 
 
 export const termsContent = [
@@ -40,7 +40,7 @@ export const termsContent = [
       color: "from-amber-500 to-yellow-600"
     },
     {
-      icon: AlertCircle,
+      icon: FingerprintPattern,
       title: "Profile Authenticity",
       highlight: "100% Verified",
       description: "All information must be genuine and accurate. Fraudulent profiles will be permanently removed",
