@@ -3,39 +3,50 @@
 import React, { useState } from "react";
 import { Search, ChevronDown, Phone, MapPin } from "lucide-react";
 import { demoProfiles } from "@/components/DemoData/AdminSideData";
+import { listedCastes } from "@/components/DemoData/ListedData";
 
 const FindComponent = () => {
   const [profiles] = useState(demoProfiles);
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     search: "",
     minAge: "",
     maxAge: "",
     gender: "",
+    caste: "",
     city: "",
   });
 
   // Get unique values for dropdowns
-  const uniqueGenders = [...new Set(profiles.map(p => p.gender))];
-  const uniqueCities = [...new Set(profiles.map(p => p.city))];
+  const uniqueGenders = [...new Set(profiles.map((p) => p.gender))];
+  const uniqueCities = [...new Set(profiles.map((p) => p.city))];
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const filteredProfiles = profiles.filter(profile => {
-    const matchSearch = profile.fullName.toLowerCase().includes(filters.search.toLowerCase()) || profile.phone.includes(filters.search);
-    const matchMinAge = !filters.minAge || parseInt(profile.age) >= parseInt(filters.minAge);
-    const matchMaxAge = !filters.maxAge || parseInt(profile.age) <= parseInt(filters.maxAge);
+  const filteredProfiles = profiles.filter((profile) => {
+    const matchSearch =
+      profile.fullName.toLowerCase().includes(filters.search.toLowerCase()) ||
+      profile.phone.includes(filters.search);
+    const matchMinAge =
+      !filters.minAge || parseInt(profile.age) >= parseInt(filters.minAge);
+    const matchMaxAge =
+      !filters.maxAge || parseInt(profile.age) <= parseInt(filters.maxAge);
     const matchGender = !filters.gender || profile.gender === filters.gender;
-    const matchCaste = !filters.caste || profile.caste === filters.caste;
-    const matchReligion = !filters.religion || profile.religion === filters.religion;
     const matchCity = !filters.city || profile.city === filters.city;
+    const matchCaste = !filters.caste || profile.caste?.toLowerCase() === filters.caste.toLowerCase();
 
-    return matchSearch && matchMinAge && matchMaxAge && matchGender && matchCaste && matchReligion && matchCity;
+    return (
+      matchSearch &&
+      matchMinAge &&
+      matchMaxAge &&
+      matchGender &&
+      matchCaste &&
+      matchCity
+    );
   });
-
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black p-6">
@@ -43,8 +54,12 @@ const FindComponent = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-1">Find Profiles</h1>
-            <p className="text-gray-400 text-sm">Search and filter profiles with advanced options</p>
+            <h1 className="text-3xl font-bold text-white mb-1">
+              Find Profiles
+            </h1>
+            <p className="text-gray-400 text-sm">
+              Search and filter profiles with advanced options
+            </p>
           </div>
 
           {/* Search Bar */}
@@ -60,79 +75,111 @@ const FindComponent = () => {
           </div>
         </div>
 
-
-          <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Min Age */}
-              <div>
-                <label className="block text-xs font-medium text-gray-400 mb-2">Min Age</label>
-                <input
-                  type="number"
-                  placeholder="18"
-                  value={filters.minAge}
-                  onChange={(e) => handleFilterChange("minAge", e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all"
-                />
+        <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-2">
+                Caste
+              </label>
+              <div className="relative">
+                <select
+                  value={filters.caste}
+                  onChange={(e) => handleFilterChange("caste", e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white appearance-none focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all cursor-pointer"
+                >
+                  <option value="">All Castes</option>
+                  {listedCastes.map((caste) => (
+                    <option key={caste} value={caste}>
+                      {caste}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-gray-500 pointer-events-none" />
               </div>
+            </div>
 
-              {/* Max Age */}
-              <div>
-                <label className="block text-xs font-medium text-gray-400 mb-2">Max Age</label>
-                <input
-                  type="number"
-                  placeholder="60"
-                  value={filters.maxAge}
-                  onChange={(e) => handleFilterChange("maxAge", e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all"
-                />
+            {/* Min Age */}
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-2">
+                Min Age
+              </label>
+              <input
+                type="number"
+                placeholder="18"
+                value={filters.minAge}
+                onChange={(e) => handleFilterChange("minAge", e.target.value)}
+                className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all"
+              />
+            </div>
+
+            {/* Max Age */}
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-2">
+                Max Age
+              </label>
+              <input
+                type="number"
+                placeholder="60"
+                value={filters.maxAge}
+                onChange={(e) => handleFilterChange("maxAge", e.target.value)}
+                className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all"
+              />
+            </div>
+
+            {/* Gender */}
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-2">
+                Gender
+              </label>
+              <div className="relative">
+                <select
+                  value={filters.gender}
+                  onChange={(e) => handleFilterChange("gender", e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white appearance-none focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all cursor-pointer"
+                >
+                  <option value="">All Genders</option>
+                  {uniqueGenders.map((gender) => (
+                    <option key={gender} value={gender}>
+                      {gender}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-gray-500 pointer-events-none" />
               </div>
+            </div>
 
-              {/* Gender */}
-              <div>
-                <label className="block text-xs font-medium text-gray-400 mb-2">Gender</label>
-                <div className="relative">
-                  <select
-                    value={filters.gender}
-                    onChange={(e) => handleFilterChange("gender", e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white appearance-none focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all cursor-pointer"
-                  >
-                    <option value="">All Genders</option>
-                    {uniqueGenders.map(gender => (
-                      <option key={gender} value={gender}>{gender}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-gray-500 pointer-events-none" />
-                </div>
-              </div>
-
-
-
-
-              {/* City */}
-              <div>
-                <label className="block text-xs font-medium text-gray-400 mb-2">City</label>
-                <div className="relative">
-                  <select
-                    value={filters.city}
-                    onChange={(e) => handleFilterChange("city", e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white appearance-none focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all cursor-pointer"
-                  >
-                    <option value="">All Cities</option>
-                    {uniqueCities.map(city => (
-                      <option key={city} value={city}>{city}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-gray-500 pointer-events-none" />
-                </div>
+            {/* City */}
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-2">
+                City
+              </label>
+              <div className="relative">
+                <select
+                  value={filters.city}
+                  onChange={(e) => handleFilterChange("city", e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-950/50 border border-gray-800 rounded-lg text-sm text-white appearance-none focus:outline-none focus:border-red-900/50 focus:ring-1 focus:ring-red-900/30 transition-all cursor-pointer"
+                >
+                  <option value="">All Cities</option>
+                  {uniqueCities.map((city) => (
+                    <option key={city} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-gray-500 pointer-events-none" />
               </div>
             </div>
           </div>
-       
+        </div>
 
         {/* Results Count */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-400">
-            Found <span className="text-white font-semibold">{filteredProfiles.length}</span> profiles
+            Found{" "}
+            <span className="text-white font-semibold">
+              {filteredProfiles.length}
+            </span>{" "}
+            profiles
           </p>
         </div>
 
@@ -142,12 +189,24 @@ const FindComponent = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-800">
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Gender</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Age</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Caste</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">City</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Phone</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Gender
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Age
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Caste
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    City
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Phone
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -161,11 +220,17 @@ const FindComponent = () => {
                         <div className="w-10 h-10 rounded-full bg-linear-to-br from-red-600 to-red-800 flex items-center justify-center text-white font-semibold text-sm shadow-lg shadow-red-900/30">
                           {profile.fullName.charAt(0)}
                         </div>
-                        <span className="text-sm font-medium text-white">{profile.fullName}</span>
+                        <span className="text-sm font-medium text-white">
+                          {profile.fullName}
+                        </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-300">{profile.gender}</td>
-                    <td className="px-6 py-4 text-sm text-gray-300">{profile.age}</td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {profile.gender}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {profile.age}
+                    </td>
                     <td className="px-6 py-4">
                       <span className="inline-flex px-2.5 py-1 rounded-md text-xs font-medium bg-gray-800/50 text-gray-300 border border-gray-700/50">
                         {profile.caste}
@@ -193,8 +258,12 @@ const FindComponent = () => {
                           <Search className="size-8 text-gray-600" />
                         </div>
                         <div>
-                          <p className="text-gray-400 text-base font-medium mb-1">No profiles found</p>
-                          <p className="text-gray-600 text-sm">Try adjusting your filters</p>
+                          <p className="text-gray-400 text-base font-medium mb-1">
+                            No profiles found
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            Try adjusting your filters
+                          </p>
                         </div>
                       </div>
                     </td>
