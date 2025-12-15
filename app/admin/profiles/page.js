@@ -19,10 +19,14 @@ const AdminProfiles = () => {
   };
 
   const handleShare = (enq) => {
-    navigator.share({
-      title: enq.fullName,
-      url: `${window.location.href.replace('/admin', '')}/${enq?.id}`,
-    });
+    if (enq?.status === "Available") {
+      navigator.share({
+        title: enq.fullName,
+        url: `${window.location.href.replace("/admin", "")}/${enq?.id}`,
+      });
+    } else {
+      router.push("/");
+    }
   };
 
   const handleCreate = (newProfile) => {
@@ -45,14 +49,8 @@ const AdminProfiles = () => {
   };
 
   const handleView = (enq) => {
-    if (enq.status === "Available") {
-      router.push(`/profiles/${enq.id}`);
-    } else {
-      router.push("/");
-    }
+    router.push(`/profiles/${enq.id}`);
   };
-
- 
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black p-6">
@@ -66,17 +64,16 @@ const AdminProfiles = () => {
                 Manage and track all profiles
               </p>
             </div>
-            
           </div>
 
           {/* Create button */}
-         <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-linear-to-r from-red-600 via-red-700 to-red-800 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-600 cursor-pointer transition-all duration-200 shadow-lg hover:shadow-red-500/25"
-            >
-              <Plus className="size-4" />
-              Create New
-            </button>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-linear-to-r from-red-600 via-red-700 to-red-800 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-600 cursor-pointer transition-all duration-200 shadow-lg hover:shadow-red-500/25"
+          >
+            <Plus className="size-4" />
+            Create New
+          </button>
         </div>
 
         {/* Stats Cards */}
