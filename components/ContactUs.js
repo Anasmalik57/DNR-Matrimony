@@ -8,19 +8,19 @@ const contactInfo = [
     id: 1,
     icon: MapPin,
     title: "Office Address",
-    detail: "12/B, MG Road, Calicut, Kerala",
+    detail: "Dno 17/661 RRL Colony, Alur Road Adoni, Kurnool dt, Andhra Pradesh",
   },
   {
     id: 2,
     icon: Mail,
     title: "Email Address",
-    detail: "support@dnrmatrimony.com",
+    detail: "dnrmarrigebuero6000@gmail.com",
   },
   {
     id: 3,
     icon: Phone,
     title: "Phone Number",
-    detail: "+91 98765 43210",
+    detail: "+91 9490296010",
   },
 ];
 
@@ -105,7 +105,7 @@ export default function ContactUs() {
                       <h3 className="text-base font-semibold text-gray-900 mb-1">
                         {info.title}
                       </h3>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-sm max-w-[18rem]">
                         {info.detail}
                       </p>
                     </div>

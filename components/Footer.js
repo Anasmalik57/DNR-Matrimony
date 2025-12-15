@@ -7,8 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 const quickLinks = [
   { href: "/about", label: "About Us" },
   { href: "/services/testimonials", label: "Success Stories" },
-  // { href: "/services/membership", label: "Membership Plans" },
-  { href: "/services/safety", label: "Safety Tips" },
   { href: "/services/termsNconditions", label: "Terms & Condition" },
   { href: "/services/privacy", label: "Privacy Policy" },
 ];
@@ -41,13 +39,13 @@ export default function Footer() {
           {/* Column 1 - Brand */}
           <div className="space-y-4">
             {/* Logo */}
-            <div onClick={()=> router.push("/")} className="w-40 scale-150 h-fit">
+            <div onClick={()=> router.push("/")} className="w-40 md:scale-140 h-fit">
               <Image src="/image.png" alt="DNR Matrimony Logo" width={400} height={400} className="w-full h-auto object-contain " />
             </div>
 
             {/* Description */}
             <p className="text-rose-100 leading-relaxed text-sm">
-              The most trusted matchmaking service for the Telugu community in Calicut. We bring hearts together with tradition, privacy, and modern technology.
+              The most trusted matchmaking service for the Telugu community in Aandra-Pradesh and Telangana. We bring hearts together with tradition, privacy, and modern technology.
             </p>
 
             {/* Social Links */}
@@ -93,21 +91,18 @@ export default function Footer() {
                   <Mail className="size-5 text-white" />
                 </div>
                 <Link
-                  href="mailto:hello@example.com"
+                  href="mailto:dnrmarrigebuero6000@gmail.com"
                   className="text-rose-100 hover:text-white transition-colors text-sm"
                 >
-                  hello@example.com
+                  dnrmarrigebuero6000@gmail.com
                 </Link>
               </div>
               <div className="flex items-center gap-3">
                 <div className=" bg-white/10 rounded-lg flex items-center justify-center shrink-0">
                   <Phone className="size-5 text-white" />
                 </div>
-                <Link
-                  href="tel:+919876543210"
-                  className="text-rose-100 hover:text-white transition-colors text-sm"
-                >
-                  +91 98765 43210
+                <Link href="tel:+919490296010" className="text-rose-100 hover:text-white transition-colors text-sm">
+                  +91 9490296010
                 </Link>
               </div>
             </div>

@@ -13,7 +13,7 @@ const features = [
     id: 2,
     icon: Users,
     title: "Community Focus",
-    description: "Dedicated to the Telugu community in Calicut.",
+    description: "Dedicated to the Telugu community in Aandra & Telangana.",
   },
   {
     id: 3,
