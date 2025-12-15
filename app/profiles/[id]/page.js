@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { MapPin, Briefcase, DollarSign, Heart, User, Users } from "lucide-react";
+import { MapPin, Briefcase, DollarSign, Heart, User, Users, IndianRupee } from "lucide-react";
 import { demoProfiles } from "@/components/DemoData/AdminSideData";
+import Image from "next/image";
+import Link from "next/link";
 
 const ProfileDetailPage = () => {
   const params = useParams();
@@ -100,10 +102,11 @@ const handleEnquireNow = () => {
                 
                 {/* Avatar */}
                 <div className="relative z-10 flex justify-center">
-                  <div className="w-32 h-32 rounded-full bg-white shadow-2xl flex items-center justify-center border-4 border-white">
-                    <span className="text-5xl font-bold text-[#C4887C]">
+                  <div className="w-32 h-32 rounded-full bg-white shadow-2xl flex items-center justify-center border-4 border-white overflow-hidden">
+                    {/* <span className="text-5xl font-bold text-[#C4887C]">
                       {profile.fullName.charAt(0)}
-                    </span>
+                    </span> */}
+                    <Image src={"/couples.png"} width={1080} height={1080} alt={"Profilepic"} className="object-cover" />
                   </div>
                 </div>
               </div>
@@ -112,7 +115,7 @@ const handleEnquireNow = () => {
               <div className="px-6 pb-6 mt-4">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-1">{profile.fullName}</h2>
-                  <p className={`text-gray-500 text-sm ${profile?.status.toLowerCase() === "available" ? "text-green-500" : "text-red-500"}`}>{profile.status}</p>
+                  <p className={`text-gray-500 text-sm flex justify-center items-center gap-1 ${profile?.status.toLowerCase() === "available" ? "text-green-500" : "text-red-500"}`}> <span className={`size-2  bg-${profile?.status.toLowerCase() === "available" ? "green" : "red"}-400 mt-0.5 rounded-full animate-pulse`}></span> {profile.status}</p>
                 </div>
 
                 <div className="space-y-3">
@@ -132,9 +135,9 @@ const handleEnquireNow = () => {
                     </div>
                   </div>
                 <div className=" w-full text-center">
-                    <p className="text-xs text-gray-500">
-                        Developed by <span className="font-semibold text-[#C4887C]">nodeskdev</span>
-                    </p>
+                    <Link href={"https://www.nodeskdeveloper.com"} target="_blank" className="text-xs text-gray-500">
+                        Developed by <span className="font-semibold text-[#C4887C]">NoDeskDeveloper</span> team
+                    </Link>
                 </div>
                 </div>
               </div>
@@ -185,7 +188,7 @@ const handleEnquireNow = () => {
                 </div>
 
                 <div className="p-4 bg-linear-to-br from-[#FFF0DD] to-[#FFE5C8] rounded-xl border border-[#E5D4C1] flex items-center gap-3">
-                  <DollarSign className="size-6 text-[#C4887C] shrink-0" />
+                  <IndianRupee className="size-6 text-[#C4887C] shrink-0" />
                   <div>
                     <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Income</p>
                     <p className="text-lg font-bold text-gray-800">{profile.income || "Not Disclosed"}</p>
