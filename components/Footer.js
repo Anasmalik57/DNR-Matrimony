@@ -6,10 +6,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 const quickLinks = [
   { href: "/about", label: "About Us" },
-  { href: "/testimonials", label: "Success Stories" },
-  { href: "/membership", label: "Membership Plans" },
-  { href: "/safety", label: "Safety Tips" },
-  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/services/testimonials", label: "Success Stories" },
+  // { href: "/services/membership", label: "Membership Plans" },
+  { href: "/services/safety", label: "Safety Tips" },
+  { href: "/services/termsNconditions", label: "Terms & Condition" },
+  { href: "/services/privacy", label: "Privacy Policy" },
 ];
 
 const galleryImages = [
