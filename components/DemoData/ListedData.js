@@ -81,7 +81,7 @@ export const listedCastes = [
   "Syed",
   "Pathan",
   "Ansari",
-  "Other"
+  // "Other"
 ];
 
 
@@ -92,5 +92,5 @@ export const listedReligions = [
   "Sikh",
   "Buddhist",
   "Jain",
-  "Other",
+  // "Other",
 ];
