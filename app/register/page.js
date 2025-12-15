@@ -6,8 +6,7 @@ import {
   occupations,
   marriageTypes,
   religions,
-  castesByReligion,
-  defaultCastes,
+  castes,
 } from "@/components/DemoData/Data";
 import { showToast } from "nextjs-toast-notify";
 
@@ -29,7 +28,6 @@ export default function RegistrationPage() {
   });
 
   // To store the current available castes based on selected religion
-  const [availableCastes, setAvailableCastes] = useState(defaultCastes);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,16 +37,7 @@ export default function RegistrationPage() {
       [name]: value,
     }));
 
-    // When religion changes, update available castes and reset caste selection
-    if (name === "religion") {
-      const selectedCastes = castesByReligion[value] || defaultCastes;
-      setAvailableCastes(selectedCastes);
-      setFormData((prev) => ({
-        ...prev,
-        caste: "", // reset caste when religion changes
-      }));
-    }
-
+   
     // Auto-calculate age from DOB
     if (name === "dob" && value) {
       const today = new Date();
@@ -71,10 +60,10 @@ export default function RegistrationPage() {
 
     console.log("Registration Data:", formData);
 
-    showToast.success("Congrats 😃! Registration Successfull", {
+    showToast.success("Congrats 😃! Registration Successfull.", {
       duration: 4000,
       progress: true,
-      position: "top-right",
+      position: "top-center",
       transition: "bounceIn",
       icon: "",
       sound: true,
@@ -307,7 +296,7 @@ export default function RegistrationPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
               >
-                {availableCastes.map((caste) => (
+                {castes.map((caste) => (
                   <option key={caste} value={caste}>
                     {caste}
                   </option>

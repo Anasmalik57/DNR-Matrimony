@@ -37,61 +37,29 @@ export const religions = [
 ];
 
 // ==================================================== //
-// =================== Castes by Religion ============= //
+// ======================== Castes ==================== //
 // ==================================================== //
-export const castesByReligion = {
-  Hindu: [
-    "Select Caste",
-    "Brahmin",
-    "Kshatriya",
-    "Vaishya",
-    "Shudra",
-    "Other",
-  ],
-  Muslim: [
-    "Select Caste",
-    "Malik",
-    "Sheikh",
-    "Syed",
-    "Pathan",
-    "Ansari",
-    "Other",
-  ],
-  Christian: [
-    "Select Caste",
-    "Roman Catholic",
-    "Protestant",
-    "Syrian Christian",
-    "Other",
-  ],
-  Sikh: [
-    "Select Caste",
-    "Jat Sikh",
-    "Khatri",
-    "Ramgarhia",
-    "Arora",
-    "Other",
-  ],
-  Buddhist: [
-    "Select Caste",
-    "Mahar",
-    "Navayana",
-    "Other",
-  ],
-  Jain: [
-    "Select Caste",
-    "Shwetambar",
-    "Digambar",
-    "Other",
-  ],
-  Other: [
-    "Select Caste",
-    "Other",
-  ],
-};
-
-// Fallback if religion is not selected or invalid
-export const defaultCastes = [
+export const castes = [
   "Select Caste",
+  "Brahmin",
+  "Kshatriya",
+  "Vaishya",
+  "Shudra",
+  "Malik",
+  "Sheikh",
+  "Syed",
+  "Pathan",
+  "Ansari",
+  "Roman Catholic",
+  "Protestant",
+  "Syrian Christian",
+  "Jat Sikh",
+  "Khatri",
+  "Ramgarhia",
+  "Arora",
+  "Mahar",
+  "Navayana",
+  "Shwetambar",
+  "Digambar",
   "Other",
 ];
