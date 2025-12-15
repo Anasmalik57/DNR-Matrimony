@@ -1,4 +1,4 @@
-import { Shield, DollarSign, Users, CheckCircle, Sparkles, FingerprintPattern } from "lucide-react";
+import { Shield, Users, CheckCircle, Sparkles, FingerprintPattern, IndianRupee } from "lucide-react";
 
 
 export const termsContent = [
@@ -24,7 +24,7 @@ export const termsContent = [
       color: "from-purple-500 to-pink-600"
     },
     {
-      icon: DollarSign,
+      icon: IndianRupee,
       title: "Meeting Charges",
       highlight: "₹3,000",
       description: "One-time service charge valid until your marriage is finalized",

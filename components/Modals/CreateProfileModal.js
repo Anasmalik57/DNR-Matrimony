@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { X, UserPlus, MapPin, DollarSign, AlertCircle } from "lucide-react";
+import { X, UserPlus, MapPin, AlertCircle, IndianRupee } from "lucide-react";
 import { listedCastes, listedReligions } from "../DemoData/ListedData";
 import CreatableSelect from "react-select/creatable";
 
@@ -308,7 +308,7 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                 Annual Income (₹) *
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
+                <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
                 <input
                   type="number"
                   name="income"

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { MapPin, Briefcase, DollarSign, Heart, User, Users, IndianRupee } from "lucide-react";
+import { MapPin, Briefcase, Heart, User, Users, IndianRupee } from "lucide-react";
 import { demoProfiles } from "@/components/DemoData/AdminSideData";
 import Image from "next/image";
 import Link from "next/link";

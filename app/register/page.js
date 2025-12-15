@@ -1,14 +1,10 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import {
-  occupations,
-  marriageTypes,
-  religions,
-  castes,
-} from "@/components/DemoData/Data";
+import { occupations, marriageTypes, } from "@/components/DemoData/Data";
 import { showToast } from "nextjs-toast-notify";
+import { listedCastes, listedReligions } from "@/components/DemoData/ListedData";
+import CreatableSelect from "react-select/creatable";
 
 export default function RegistrationPage() {
   const [formData, setFormData] = useState({
@@ -27,6 +23,23 @@ export default function RegistrationPage() {
     city: "",
   });
 
+  // =========================================================================================
+  // ============================== Castes & Religion Dropdown  ==============================
+  // =========================================================================================
+  const casteOptions = listedCastes.map((c) => ({
+    label: c,
+    value: c,
+  }));
+
+  const religionOptions = listedReligions.map((r) => ({
+    label: r,
+    value: r,
+  }));
+
+  // =========================================================================================
+  // =========================================================================================
+  // =========================================================================================
+
   // To store the current available castes based on selected religion
 
   const handleChange = (e) => {
@@ -37,7 +50,6 @@ export default function RegistrationPage() {
       [name]: value,
     }));
 
-   
     // Auto-calculate age from DOB
     if (name === "dob" && value) {
       const today = new Date();
@@ -273,35 +285,33 @@ export default function RegistrationPage() {
               <label className="block text-gray-700 font-medium mb-2">
                 Religion <span className="text-rose-600">*</span>
               </label>
-              <select
-                name="religion"
-                value={formData.religion}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
-              >
-                {religions.map((religion) => (
-                  <option key={religion} value={religion}>
-                    {religion}
-                  </option>
-                ))}
-              </select>
+             <CreatableSelect
+                options={religionOptions}
+                value={ formData.religion ? { label: formData.religion, value: formData.religion } : null }
+                onChange={(selected) => setFormData((prev) => ({ ...prev, religion: selected ? selected.value : "", })) }
+                placeholder="Select or type religion"
+                isClearable
+                styles={{
+                  control: (base) => ({ ...base, borderRadius: "12px", padding: "2px", borderColor: "#d1d5db", }),
+                }}
+              />
+
             </div>
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Caste <span className="text-rose-600">*</span>
               </label>
-              <select
-                name="caste"
-                value={formData.caste}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
-              >
-                {castes.map((caste) => (
-                  <option key={caste} value={caste}>
-                    {caste}
-                  </option>
-                ))}
-              </select>
+             <CreatableSelect
+                options={casteOptions}
+                value={ formData.caste ? { label: formData.caste, value: formData.caste } : null }
+                onChange={(selected) => setFormData((prev) => ({ ...prev, caste: selected ? selected.value : "", })) }
+                placeholder="Select or type caste"
+                isClearable
+                styles={{
+                  control: (base) => ({ ...base, borderRadius: "12px", padding: "2px", borderColor: "#d1d5db", }),
+                }}
+              />
+
             </div>
           </div>
 

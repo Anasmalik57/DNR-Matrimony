@@ -62,7 +62,6 @@ export const listedCastes = [
   "Kummari",
   "Madiwala",
   "Pallan",
-  "Sri Vaishnava",
   "Vaishnava Dasulu",
   "Roman Catholic",
   "Nambiar",
