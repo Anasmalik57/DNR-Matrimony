@@ -9,7 +9,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/testimonials", label: "Testimonials" },
-  { href: "/contact", label: "Contact Us" },
+  { href: "/services/contactUs", label: "Contact Us" },
 ];
 
 const jost = Jost({

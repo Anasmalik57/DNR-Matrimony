@@ -89,7 +89,7 @@ export default function TermsNconditionsPage() {
                 <Link href={"/register"} className="px-8 py-4 bg-white text-rose-600 rounded-full font-semibold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in ">
                   Register Now
                 </Link>
-                <Link href={"/contact"} className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-rose-600 transition-all duration-300 ease-in ">
+                <Link href={"services/contactUs"} className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-rose-600 transition-all duration-300 ease-in ">
                   Contact Support
                 </Link>
               </div>
