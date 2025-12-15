@@ -1,16 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import {
-  X,
-  UserPlus,
-  Phone,
-  MapPin,
-  Hash,
-  DollarSign,
-  Calendar,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { X, UserPlus, MapPin, DollarSign, AlertCircle } from "lucide-react";
+import { listedCastes, listedReligions } from "../DemoData/ListedData";
+import CreatableSelect from "react-select/creatable";
 
 const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -29,6 +21,20 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ====================================================================
+
+  const casteOptions = listedCastes.map((c) => ({
+    label: c,
+    value: c,
+  }));
+
+  const religionOptions = listedReligions.map((r) => ({
+    label: r,
+    value: r,
+  }));
+
+  // ====================================================================
 
   const validateForm = () => {
     const newErrors = {};
@@ -209,13 +215,19 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Caste
                 </label>
-                <input
-                  type="text"
-                  name="caste"
-                  value={formData.caste}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-600/50 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 text-white placeholder-gray-500 transition-all duration-200"
-                  placeholder="General"
+                <CreatableSelect
+                  options={casteOptions}
+                  value={ formData.caste ? { label: formData.caste, value: formData.caste } : null }
+                  onChange={(selected) => setFormData((prev) => ({ ...prev, caste: selected ? selected.value : "" })) }
+                  placeholder="Select or type caste"
+                  isClearable
+                  className="text-slate-300"
+                  styles={{
+                    control: (base) => ({ ...base, backgroundColor: "#1f2937", borderColor: "#4b5563", borderRadius: "12px", padding: "6px 2px" }),
+                    menu: (base) => ({ ...base, backgroundColor: "#1f2937"}),
+                    singleValue: (base) => ({ ...base, color: "#fff" }),
+                    input: (base) => ({ ...base, color: "#fff" }),
+                  }}
                 />
               </div>
 
@@ -223,13 +235,19 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Religion
                 </label>
-                <input
-                  type="text"
-                  name="religion"
-                  value={formData.religion}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-600/50 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 text-white placeholder-gray-500 transition-all duration-200"
-                  placeholder="Hindu"
+                <CreatableSelect
+                  options={religionOptions}
+                  value={ formData.religion ? { label: formData.religion, value: formData.religion } : null }
+                  onChange={(selected) => setFormData((prev) => ({ ...prev, religion: selected ? selected.value : "" })) }
+                  placeholder="Select or type religion"
+                  isClearable
+                  className="text-slate-300"
+                  styles={{
+                    control: (base) => ({ ...base, backgroundColor: "#1f2937", borderColor: "#4b5563", borderRadius: "12px", padding: "6px 2px" }),
+                    menu: (base) => ({ ...base, backgroundColor: "#1f2937" }),
+                    singleValue: (base) => ({ ...base, color: "#fff" }),
+                    input: (base) => ({ ...base, color: "#fff" }),
+                  }}
                 />
               </div>
             </div>

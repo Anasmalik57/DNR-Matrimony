@@ -13,7 +13,8 @@
     "next": "16.0.10",
     "nextjs-toast-notify": "^1.57.0",
     "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "react-dom": "19.2.1",
+    "react-select": "^5.10.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
