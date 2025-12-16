@@ -17,7 +17,7 @@ import CreatableSelect from "react-select/creatable";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { API_BASE_URL } from "@/lib/api";
-
+import { marriageTypes } from "../DemoData/Data";
 
 const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -57,7 +57,10 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
     setFormData((prev) => ({ ...prev, age: age }));
@@ -72,12 +75,17 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
-    if (!formData.phoneNumber.trim()) newErrors.phoneNumber = "Phone is required";
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
-    if (!formData.educationQualification.trim()) newErrors.educationQualification = "Education is required";
-    if (!formData.marriageType) newErrors.marriageType = "Marriage type is required";
+    if (!formData.phoneNumber.trim())
+      newErrors.phoneNumber = "Phone is required";
+    if (!formData.dateOfBirth)
+      newErrors.dateOfBirth = "Date of birth is required";
+    if (!formData.educationQualification.trim())
+      newErrors.educationQualification = "Education is required";
+    if (!formData.marriageType)
+      newErrors.marriageType = "Marriage type is required";
     if (!formData.city.trim()) newErrors.city = "City is required";
-    if (!formData.income || formData.income <= 0) newErrors.income = "Valid income is required";
+    if (!formData.income || formData.income <= 0)
+      newErrors.income = "Valid income is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -126,7 +134,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
         <div className="sticky top-0 bg-gray-900/80 backdrop-blur-sm border-b border-gray-700/50 px-6 py-4 flex items-center justify-between rounded-t-2xl">
           <div className="flex items-center gap-3">
             <UserPlus className="size-6 text-red-400" />
-            <h2 className="text-2xl font-bold text-white">Create New Profile</h2>
+            <h2 className="text-2xl font-bold text-white">
+              Create New Profile
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -139,7 +149,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Profile Pic */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-3">Profile Pic</label>
+            <label className="block text-sm font-semibold text-gray-300 mb-3">
+              Profile Pic
+            </label>
             <CldUploadWidget
               uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
               onSuccess={handleUploadSuccess}
@@ -169,7 +181,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                       ) : (
                         <Upload className="w-12 h-12 mx-auto text-gray-500" />
                       )}
-                      <p className="text-gray-400">Click to upload profile picture</p>
+                      <p className="text-gray-400">
+                        Click to upload profile picture
+                      </p>
                     </div>
                   )}
                 </div>
@@ -182,20 +196,31 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
             {/* Left Column */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Full Name *</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Full Name *
+                </label>
                 <input
                   type="text"
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.fullName ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 text-white transition-all`}
+                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.fullName ? "border-red-500/50" : "border-gray-600/50"
+                  } focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 text-white transition-all`}
                   placeholder="Enter full name"
                 />
-                {errors.fullName && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.fullName}</p>}
+                {errors.fullName && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.fullName}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Father's Name</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Father's Name
+                </label>
                 <input
                   type="text"
                   name="fatherName"
@@ -207,7 +232,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Mother's Name</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Mother's Name
+                </label>
                 <input
                   type="text"
                   name="motherName"
@@ -219,16 +246,27 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Phone *</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Phone *
+                </label>
                 <input
                   type="tel"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.phoneNumber ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 text-white`}
+                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.phoneNumber
+                      ? "border-red-500/50"
+                      : "border-gray-600/50"
+                  } focus:border-red-500/50 text-white`}
                   placeholder="9876543210"
                 />
-                {errors.phoneNumber && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.phoneNumber}</p>}
+                {errors.phoneNumber && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.phoneNumber}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -240,14 +278,25 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                   name="dateOfBirth"
                   value={formData.dateOfBirth}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.dateOfBirth ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 text-white`}
+                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.dateOfBirth
+                      ? "border-red-500/50"
+                      : "border-gray-600/50"
+                  } focus:border-red-500/50 text-white`}
                   max={new Date().toISOString().split("T")[0]}
                 />
-                {errors.dateOfBirth && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.dateOfBirth}</p>}
+                {errors.dateOfBirth && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.dateOfBirth}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Age (Auto-calculated)</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Age (Auto-calculated)
+                </label>
                 <input
                   type="number"
                   value={formData.age}
@@ -261,7 +310,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
             {/* Right Column */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Gender</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Gender
+                </label>
                 <select
                   name="gender"
                   value={formData.gender}
@@ -283,10 +334,19 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                   name="educationQualification"
                   value={formData.educationQualification}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.educationQualification ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 text-white`}
+                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.educationQualification
+                      ? "border-red-500/50"
+                      : "border-gray-600/50"
+                  } focus:border-red-500/50 text-white`}
                   placeholder="e.g. B.Tech, M.Com, etc."
                 />
-                {errors.educationQualification && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.educationQualification}</p>}
+                {errors.educationQualification && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.educationQualification}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -297,27 +357,54 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                   name="marriageType"
                   value={formData.marriageType}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.marriageType ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 text-white`}
+                  className={`w-full px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.marriageType
+                      ? "border-red-500/50"
+                      : "border-gray-600/50"
+                  } focus:border-red-500/50 text-white`}
                 >
-                  <option value="">Select marriage type</option>
-                  <option value="Arranged">Arranged</option>
-                  <option value="Love">Love</option>
-                  <option value="Love cum Arranged">Love cum Arranged</option>
+                  {marriageTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
                 </select>
-                {errors.marriageType && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.marriageType}</p>}
+                {errors.marriageType && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="size-3" />
+                    {errors.marriageType}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Caste</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Caste
+                </label>
                 <CreatableSelect
                   options={casteOptions}
-                  value={formData.caste ? { label: formData.caste, value: formData.caste } : null}
-                  onChange={(selected) => setFormData((prev) => ({ ...prev, caste: selected?.value || "" }))}
+                  value={
+                    formData.caste
+                      ? { label: formData.caste, value: formData.caste }
+                      : null
+                  }
+                  onChange={(selected) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      caste: selected?.value || "",
+                    }))
+                  }
                   placeholder="Select or type caste"
                   isClearable
                   className="text-slate-300"
                   styles={{
-                    control: (base) => ({ ...base, backgroundColor: "#1f2937", borderColor: "#4b5563", borderRadius: "12px", padding: "6px 2px" }),
+                    control: (base) => ({
+                      ...base,
+                      backgroundColor: "#1f2937",
+                      borderColor: "#4b5563",
+                      borderRadius: "12px",
+                      padding: "6px 2px",
+                    }),
                     menu: (base) => ({ ...base, backgroundColor: "#1f2937" }),
                     singleValue: (base) => ({ ...base, color: "#fff" }),
                     input: (base) => ({ ...base, color: "#fff" }),
@@ -326,16 +413,33 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Religion</label>
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                  Religion
+                </label>
                 <CreatableSelect
                   options={religionOptions}
-                  value={formData.religion ? { label: formData.religion, value: formData.religion } : null}
-                  onChange={(selected) => setFormData((prev) => ({ ...prev, religion: selected?.value || "" }))}
+                  value={
+                    formData.religion
+                      ? { label: formData.religion, value: formData.religion }
+                      : null
+                  }
+                  onChange={(selected) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      religion: selected?.value || "",
+                    }))
+                  }
                   placeholder="Select or type religion"
                   isClearable
                   className="text-slate-300"
                   styles={{
-                    control: (base) => ({ ...base, backgroundColor: "#1f2937", borderColor: "#4b5563", borderRadius: "12px", padding: "6px 2px" }),
+                    control: (base) => ({
+                      ...base,
+                      backgroundColor: "#1f2937",
+                      borderColor: "#4b5563",
+                      borderRadius: "12px",
+                      padding: "6px 2px",
+                    }),
                     menu: (base) => ({ ...base, backgroundColor: "#1f2937" }),
                     singleValue: (base) => ({ ...base, color: "#fff" }),
                     input: (base) => ({ ...base, color: "#fff" }),
@@ -348,7 +452,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
           {/* Bottom Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">City *</label>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                City *
+              </label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
                 <input
@@ -356,15 +462,24 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className={`w-full pl-10 px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.city ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 text-white`}
+                  className={`w-full pl-10 px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.city ? "border-red-500/50" : "border-gray-600/50"
+                  } focus:border-red-500/50 text-white`}
                   placeholder="Delhi"
                 />
               </div>
-              {errors.city && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.city}</p>}
+              {errors.city && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="size-3" />
+                  {errors.city}
+                </p>
+              )}
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">Employment Type</label>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Employment Type
+              </label>
               <select
                 name="EmployementType"
                 value={formData.EmployementType}
@@ -380,7 +495,9 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">Annual Income (₹) *</label>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Annual Income (₹) *
+              </label>
               <div className="relative">
                 <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
                 <input
@@ -388,12 +505,19 @@ const CreateProfileModal = ({ isOpen, onClose, onSubmit }) => {
                   name="income"
                   value={formData.income}
                   onChange={handleChange}
-                  className={`w-full pl-10 px-4 py-3 rounded-xl bg-gray-800/50 border ${errors.income ? "border-red-500/50" : "border-gray-600/50"} focus:border-red-500/50 text-white`}
+                  className={`w-full pl-10 px-4 py-3 rounded-xl bg-gray-800/50 border ${
+                    errors.income ? "border-red-500/50" : "border-gray-600/50"
+                  } focus:border-red-500/50 text-white`}
                   placeholder="500000"
                   min="0"
                 />
               </div>
-              {errors.income && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><AlertCircle className="size-3" />{errors.income}</p>}
+              {errors.income && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="size-3" />
+                  {errors.income}
+                </p>
+              )}
             </div>
           </div>
 

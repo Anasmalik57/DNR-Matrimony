@@ -55,7 +55,7 @@ export default function Hero() {
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/explore"
+                href="/profiles"
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-gray-800 text-gray-800 rounded-full hover:bg-gray-800 hover:text-white transition-all duration-300 font-medium text-lg group"
               >
                 Explore Match

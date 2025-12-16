@@ -88,6 +88,9 @@ const AdminProfiles = () => {
     } catch (error) {
       console.error("Error creating profile:", error);
     }
+    finally {
+      await fetchProfiles();
+      setIsCreateModalOpen(false);}
   };
 
   const handleEdit = (profile) => {
