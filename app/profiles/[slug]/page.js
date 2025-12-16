@@ -66,52 +66,55 @@ const ProfileDetailPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleEnquireNow = () => {
+  const handleEnquireNow = async () => {
     if (!profile) return;
 
-    const enquiryId = `ENQ${Date.now()}`;
+    // Validate required fields
+    if (!formData.enquirerName || !formData.enquirerPhone || !formData.enquirerDescription || !formData.enquirerCaste) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
     const enquiryData = {
-      id: enquiryId,
-      profileId: profile._id,
-      profileSlug: profile.slug,
-
-      // Enquirer details
-      enquirerName: formData.enquirerName,
-      enquirerPhone: formData.enquirerPhone,
-      enquirerReligion: formData.enquirerReligion,
-      enquirerAge: formData.enquirerAge,
-      enquirerCaste: formData.enquirerCaste,
+      name: formData.enquirerName,
+      age: parseInt(formData.enquirerAge) || 0, // Default to 0 if empty, but backend validation will handle
+      religion: formData.enquirerReligion || "Not Specified",
+      phone: formData.enquirerPhone,
       enquirerDescription: formData.enquirerDescription,
-
-      submittedAt: new Date().toISOString(),
-      profileDetails: {
-        fullName: profile.fullName,
-        phoneNumber: profile.phoneNumber,
-        city: profile.city,
-        age: profile.age,
-        gender: profile.gender,
-        pic: profile.pic,
-      },
+      Pic: profile?.pic,
+      ProfileID: profile._id,
+      enquirerCaste: formData.enquirerCaste,
     };
 
-    console.log("Enquiry Submitted:", enquiryData);
+    try {
+      const res = await fetch(`${API_BASE_URL}/enquiries`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(enquiryData),
+      });
 
-    // Save to localStorage
-    const existingEnquiries = JSON.parse(localStorage.getItem("enquiries") || "[]");
-    existingEnquiries.push(enquiryData);
-    localStorage.setItem("enquiries", JSON.stringify(existingEnquiries));
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || "Failed to submit enquiry");
+      }
 
-    alert("Enquiry submitted successfully!");
+      const data = await res.json();
+      console.log("Enquiry Submitted:", data.data);
 
-    // Reset form
-    setFormData({
-      enquirerName: "",
-      enquirerReligion: "",
-      enquirerAge: "",
-      enquirerPhone: "",
-      enquirerCaste: "",
-      enquirerDescription: "",
-    });
+      alert("Enquiry submitted successfully!");
+
+      // Reset form
+      setFormData({
+        enquirerName: "",
+        enquirerReligion: "",
+        enquirerAge: "",
+        enquirerPhone: "",
+        enquirerCaste: "",
+        enquirerDescription: "",
+      });
+    } catch (err) {
+      alert(err.message || "Error submitting enquiry");
+    }
   };
 
   // Loading State
