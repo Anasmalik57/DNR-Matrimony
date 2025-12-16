@@ -3,97 +3,46 @@
 import React, { useState, useEffect } from "react";
 import { Search, Calendar, Phone, User, Hash, Download, RefreshCw } from "lucide-react";
 import { Inter, Poppins } from "next/font/google";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { API_BASE_URL } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({ weight: ["400", "500", "600", "700"], subsets: ["latin"], variable: "--font-poppins" });
 
-// Demo Data
-const demoEnquiries = [
-  {
-    id: "ENQ001",
-    profileId: "PRF123",
-    enquirerName: "Rajesh Kumar",
-    enquirerPhone: "+91 9876543210",
-    submittedAt: "2024-12-10T10:30:00",
-  },
-  {
-    id: "ENQ002",
-    profileId: "PRF456",
-    enquirerName: "Priya Sharma",
-    enquirerPhone: "+91 8765432109",
-    submittedAt: "2024-12-11T14:45:00",
-  },
-  {
-    id: "ENQ003",
-    profileId: "PRF789",
-    enquirerName: "Amit Verma",
-    enquirerPhone: "+91 7654321098",
-    submittedAt: "2024-12-12T09:15:00",
-  },
-  {
-    id: "ENQ004",
-    profileId: "PRF321",
-    enquirerName: "Neha Gupta",
-    enquirerPhone: "+91 9988776655",
-    submittedAt: "2024-12-12T16:20:00",
-  },
-  {
-    id: "ENQ005",
-    profileId: "PRF654",
-    enquirerName: "Vikram Singh",
-    enquirerPhone: "+91 8899001122",
-    submittedAt: "2024-12-13T11:00:00",
-  },
-  {
-    id: "ENQ006",
-    profileId: "PRF987",
-    enquirerName: "Anita Desai",
-    enquirerPhone: "+91 7766554433",
-    submittedAt: "2024-12-13T15:30:00",
-  },
-  {
-    id: "ENQ007",
-    profileId: "PRF147",
-    enquirerName: "Sanjay Patel",
-    enquirerPhone: "+91 9876501234",
-    submittedAt: "2024-12-14T08:45:00",
-  },
-];
-
 const EnquiryPage = () => {
+  const router = useRouter();
   const [enquiries, setEnquiries] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchEnquiries = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API_BASE_URL}/enquiries`);
+      if (!res.ok) throw new Error("Failed to fetch enquiries");
+      const data = await res.json();
+      setEnquiries(data.data || []);
+    } catch (err) {
+      setError(err.message);
+      setEnquiries([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Fetch from localStorage or use demo data
-    const fetchEnquiries = () => {
-      try {
-        const storedData = localStorage.getItem("enquiries");
-        if (storedData) {
-          setEnquiries(JSON.parse(storedData));
-        } else {
-          setEnquiries(demoEnquiries);
-          localStorage.setItem("enquiries", JSON.stringify(demoEnquiries));
-        }
-      } catch (error) {
-        console.error("Error loading enquiries:", error);
-        setEnquiries(demoEnquiries);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchEnquiries();
   }, []);
 
-  const handleRefresh = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const storedData = localStorage.getItem("enquiries");
-      setEnquiries(storedData ? JSON.parse(storedData) : demoEnquiries);
-      setIsLoading(false);
-    }, 500);
+  const handleRefresh = async () => {
+    await fetchEnquiries();
+  };
+
+  const handleProfileClick = (profileId) => {
+    router.push(`/profileById/${profileId}`);
   };
 
   const formatDate = (dateString) => {
@@ -108,10 +57,21 @@ const EnquiryPage = () => {
 
   const filteredEnquiries = enquiries.filter(
     (enq) =>
-      enq.enquirerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      enq.enquirerPhone.includes(searchTerm) ||
-      enq.profileId.toLowerCase().includes(searchTerm.toLowerCase())
+      enq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      enq.phone.includes(searchTerm) ||
+      enq.ProfileID.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (error) {
+    return (
+      <div className={`${inter.variable} ${poppins.variable} min-h-screen bg-linear-to-br from-gray-950 via-gray-900 to-black flex items-center justify-center`}>
+        <div className="text-center text-red-400">
+          <p>Error: {error}</p>
+          <button onClick={handleRefresh} className="mt-4 px-4 py-2 bg-rose-600 text-white rounded">Retry</button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -147,7 +107,6 @@ const EnquiryPage = () => {
             >
               <RefreshCw className="size-4.5" />
             </button>
-
 
             {/* Search */}
             <div className="relative w-full lg:w-80">
@@ -228,12 +187,18 @@ const EnquiryPage = () => {
                       Submitted At
                     </div>
                   </th>
+                  <th className="px-5 py-3.5 text-left">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-gray-300 uppercase tracking-wider" style={{ fontFamily: "var(--font-poppins)" }}>
+                      <User className="size-3.5" />
+                      Pic
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredEnquiries.map((enq, index) => (
                   <tr
-                    key={enq.id}
+                    key={enq._id}
                     className="border-b border-gray-800/50 hover:bg-linear-to-r hover:from-rose-950/10 hover:to-transparent transition-all duration-200"
                   >
                     <td className="px-5 py-3.5">
@@ -242,35 +207,54 @@ const EnquiryPage = () => {
                       </span>
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="inline-flex px-2.5 py-1 bg-rose-500/10 border border-rose-500/20 rounded-md text-xs font-semibold text-rose-400" style={{ fontFamily: "var(--font-poppins)" }}>
-                        {enq.profileId}
-                      </span>
+                      <button
+                        onClick={() => handleProfileClick(enq.ProfileID)}
+                        className="inline-flex px-2.5 py-1 bg-rose-500/10 border border-rose-500/20 rounded-md text-xs font-semibold text-rose-400 hover:bg-rose-500/20 transition"
+                        style={{ fontFamily: "var(--font-poppins)" }}
+                      >
+                        {enq.ProfileID}
+                      </button>
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-full bg-linear-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white text-xs font-bold" style={{ fontFamily: "var(--font-poppins)" }}>
-                          {enq.enquirerName.charAt(0)}
+                          {enq.name.charAt(0)}
                         </div>
                         <span className="text-sm font-medium text-white" style={{ fontFamily: "var(--font-poppins)" }}>
-                          {enq.enquirerName}
+                          {enq.name}
                         </span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
                       <span className="text-sm text-gray-300 font-mono" style={{ fontFamily: "var(--font-inter)" }}>
-                        {enq.enquirerPhone}
+                        {enq.phone}
                       </span>
                     </td>
                     <td className="px-5 py-3.5">
                       <span className="text-sm text-gray-400" style={{ fontFamily: "var(--font-inter)" }}>
-                        {formatDate(enq.submittedAt)}
+                        {formatDate(enq.createdAt)}
                       </span>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      {enq.Pic ? (
+                        <Image
+                          src={enq.Pic}
+                          alt="Enquiry Pic"
+                          width={32}
+                          height={32}
+                          className="w-8 h-8 rounded-full object-cover border-2 border-gray-700"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-linear-to-br from-rose-500 to-rose-700 flex items-center justify-center text-white text-xs font-bold">
+                          {enq.name.charAt(0)}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
                 {filteredEnquiries.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="px-5 py-12 text-center">
+                    <td colSpan="6" className="px-5 py-12 text-center">
                       <div className="flex flex-col items-center gap-2">
                         <Search className="size-10 text-gray-700" />
                         <p className="text-gray-400 text-sm font-medium" style={{ fontFamily: "var(--font-poppins)" }}>
