@@ -120,7 +120,7 @@ const AdminProfiles = () => {
   };
 
   const handleView = (profile) => {
-    router.push(`/profiles/${profile._id}`);
+    router.push(`/profiles/${profile?.slug}`);
   };
 
   const closeCreateModal = () => setIsCreateModalOpen(false);
