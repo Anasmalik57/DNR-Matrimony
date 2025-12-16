@@ -3,6 +3,7 @@ export const demoProfiles = [
   {
     id: "1",
     fullName: "John Doe",
+    pic: "https://images.pexels.com/photos/4126749/pexels-photo-4126749.jpeg",
     fatherName: "Robert Doe",
     motherName: "Mary Doe",
     phone: "+91 9876543210",
@@ -19,6 +20,8 @@ export const demoProfiles = [
   {
     id: "2",
     fullName: "Sunil",
+    pic: "https://images.pexels.com/photos/4126749/pexels-photo-4126749.jpeg",
+
     fatherName: "Akshay Reddy",
     motherName: "Anna Smith",
     phone: "+91 8765432109",
@@ -35,6 +38,8 @@ export const demoProfiles = [
   {
     id: "3",
     fullName: "Alice Johnson",
+    pic: "https://images.pexels.com/photos/4126749/pexels-photo-4126749.jpeg",
+
     fatherName: "David Johnson",
     motherName: "Linda Johnson",
     phone: "+91 7654321098",
@@ -51,7 +56,9 @@ export const demoProfiles = [
   {
     id: "4",
     fullName: "Alif",
+    pic: "https://images.pexels.com/photos/4126749/pexels-photo-4126749.jpeg",
     fatherName: "Suleman Khan",
+
     motherName: "Zulaikha",
     phone: "+91 6543210987",
     gender: "Male",

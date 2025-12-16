@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { MapPin, Briefcase, Heart, User, Users, IndianRupee } from "lucide-react";
+import { User, Heart, Users, MapPin, Briefcase, IndianRupee, } from "lucide-react";
 import { demoProfiles } from "@/components/DemoData/AdminSideData";
 import Image from "next/image";
 import Link from "next/link";
+import CreatableSelect from "react-select/creatable";
+import { listedCastes, listedReligions } from "@/components/DemoData/ListedData";
 
 const ProfileDetailPage = () => {
   const params = useParams();
@@ -16,7 +18,24 @@ const ProfileDetailPage = () => {
     enquirerReligion: "",
     enquirerAge: "",
     enquirerPhone: "",
+    enquirerCaste: "",
+    enquirerDescription: "",
   });
+
+  // ==============================================================================
+  // ==============================================================================
+  // ================== Cast and Religion Options for Dropdowns ===================
+    const casteOptions = listedCastes.map((c) => ({
+      label: c,
+      value: c,
+    }));
+
+    const religionOptions = listedReligions.map((r) => ({
+      label: r,
+      value: r,
+    }));
+  // ==============================================================================
+  // ==============================================================================
 
   useEffect(() => {
     if (params?.id) {
@@ -29,32 +48,51 @@ const ProfileDetailPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-const handleEnquireNow = () => {
+  const handleEnquireNow = () => {
   // Generate unique ID
   const enquiryId = `ENQ${Date.now()}`;
-  
+
   const enquiryData = {
     id: enquiryId,
-    profileId: profile.id, // param se profile ID
+    profileId: profile.id,
+
+    // Enquirer details
     enquirerName: formData.enquirerName,
     enquirerPhone: formData.enquirerPhone,
-    submittedAt: new Date().toISOString(), // ISO format for consistency
-    // Extra fields (optional)
     enquirerReligion: formData.enquirerReligion,
     enquirerAge: formData.enquirerAge,
+    enquirerCaste: formData.enquirerCaste,
+    enquirerDescription: formData.enquirerDescription,
+
+    // Meta
+    submittedAt: new Date().toISOString(),
+
+    // Profile snapshot
     profileDetails: profile,
   };
 
   console.log("Enquiry Data:", enquiryData);
-  
+
   // Save to localStorage
-  const existingEnquiries = JSON.parse(localStorage.getItem("enquiries") || "[]");
+  const existingEnquiries = JSON.parse(
+    localStorage.getItem("enquiries") || "[]"
+  );
   existingEnquiries.push(enquiryData);
   localStorage.setItem("enquiries", JSON.stringify(existingEnquiries));
-  
+
   alert("Enquiry submitted successfully!");
-  setFormData({ enquirerName: "", enquirerReligion: "", enquirerAge: "", enquirerPhone: "" });
+
+  // Reset form
+  setFormData({
+    enquirerName: "",
+    enquirerReligion: "",
+    enquirerAge: "",
+    enquirerPhone: "",
+    enquirerCaste: "",
+    enquirerDescription: "",
+  });
 };
+
 
   if (!profile) {
     return (
@@ -98,15 +136,20 @@ const handleEnquireNow = () => {
                     />
                   </svg>
                 </div> */}
-               
-                
+
                 {/* Avatar */}
                 <div className="relative z-10 flex justify-center">
                   <div className="w-32 h-32 rounded-full bg-white shadow-2xl flex items-center justify-center border-4 border-white overflow-hidden">
                     {/* <span className="text-5xl font-bold text-[#C4887C]">
                       {profile.fullName.charAt(0)}
                     </span> */}
-                    <Image src={"/couples.png"} width={1080} height={1080} alt={"Profilepic"} className="object-cover" />
+                    <Image
+                      src={"/couples.png"}
+                      width={1080}
+                      height={1080}
+                      alt={"Profilepic"}
+                      className="object-cover"
+                    />
                   </div>
                 </div>
               </div>
@@ -114,8 +157,26 @@ const handleEnquireNow = () => {
               {/* Profile Info */}
               <div className="px-6 pb-6 mt-4">
                 <div className="text-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-1">{profile.fullName}</h2>
-                  <p className={`text-gray-500 text-sm flex justify-center items-center gap-1 ${profile?.status.toLowerCase() === "available" ? "text-green-500" : "text-red-500"}`}> <span className={`size-2  bg-${profile?.status.toLowerCase() === "available" ? "green" : "red"}-400 mt-0.5 rounded-full animate-pulse`}></span> {profile.status}</p>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-1">
+                    {profile.fullName}
+                  </h2>
+                  <p
+                    className={`text-gray-500 text-sm flex justify-center items-center gap-1 ${
+                      profile?.status.toLowerCase() === "available"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {" "}
+                    <span
+                      className={`size-2  bg-${
+                        profile?.status.toLowerCase() === "available"
+                          ? "green"
+                          : "red"
+                      }-400 mt-0.5 rounded-full animate-pulse`}
+                    ></span>{" "}
+                    {profile.status}
+                  </p>
                 </div>
 
                 <div className="space-y-3">
@@ -123,22 +184,26 @@ const handleEnquireNow = () => {
                     <MapPin className="size-5 text-[#C4887C]" />
                     <div className="flex-1">
                       <p className="text-xs text-gray-500 font-medium">City</p>
-                      <p className="text-sm font-semibold text-gray-800">{profile.city}</p>
+                      <p className="text-sm font-semibold text-gray-800">
+                        {profile.city}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 p-3 bg-[#FFF0DD] rounded-xl">
                     <User className="size-5 text-[#C4887C]" />
                     <div className="flex-1">
-                      <p className="text-xs text-gray-500 font-medium">Age & Gender</p>
-                      <p className="text-sm font-semibold text-gray-800">{profile.age} years • {profile.gender}</p>
+                      <p className="text-xs text-gray-500 font-medium">
+                        Age & Gender
+                      </p>
+                      <p className="text-sm font-semibold text-gray-800">
+                        {profile.age} years • {profile.gender}
+                      </p>
                     </div>
                   </div>
-                <div className=" w-full text-center">
-                    <Link href={"https://www.nodeskdeveloper.com"} target="_blank" className="text-xs text-gray-500">
-                        Developed by <span className="font-semibold text-[#C4887C]">NoDeskDeveloper</span> team
-                    </Link>
-                </div>
+                  <div className=" w-full text-center">
+                    <Link href={"https://www.nodeskdeveloper.com"} target="_blank" className="text-xs text-gray-500" >Developed by{" "} <span className="font-semibold text-[#C4887C]">NoDeskDeveloper</span>{" "}team</Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,11 +213,8 @@ const handleEnquireNow = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Personal Details */}
             <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                <Users className="size-6 text-[#C4887C]" />
-                Personal Information
-              </h3>
-              
+              <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2"><Users className="size-6 text-[#C4887C]" /> Personal Information</h3>
+
               <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                 <div className="p-4 bg-linear-to-br from-[#FFF0DD] to-[#FFE5C8] rounded-xl border border-[#E5D4C1]">
                   <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Full Name</p>
@@ -199,59 +261,64 @@ const handleEnquireNow = () => {
 
             {/* Enquiry Form */}
             <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                <Heart className="size-6 text-[#C4887C]" />
-                Interested? Enquire Now
-              </h3>
+              <h3 className="text-2xl font-bold text-gray-800-6 flex items-center gap-2"><Heart className="size-6 text-[#C4887C]" /> Interested? Enquire Now</h3>
 
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Your Name</label>
-                  <input
-                    type="text"
-                    name="enquirerName"
-                    value={formData.enquirerName}
-                    onChange={handleInputChange}
-                    placeholder="Enter your full name"
-                    className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl text-gray-800 placeholder:text-gray-500 focus:outline-none focus:border-[#C4887C] focus:ring-2 focus:ring-[#C4887C]/20 transition-all"
-                  />
+                  <input type="text" name="enquirerName" value={formData.enquirerName} onChange={handleInputChange} placeholder="Enter your full name" className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl text-gray-800 placeholder:text-gray-500 focus:outline-none focus:border-[#C4887C] focus:ring-2 focus:ring-[#C4887C]/20 transition-all" />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Religion</label>
-                    <input
-                      type="text"
-                      name="enquirerReligion"
-                      value={formData.enquirerReligion}
-                      onChange={handleInputChange}
-                      placeholder="Your religion"
-                      className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl text-gray-800 placeholder:text-gray-500 focus:outline-none focus:border-[#C4887C] focus:ring-2 focus:ring-[#C4887C]/20 transition-all"
+                    <CreatableSelect
+                      options={religionOptions}
+                      value={ formData.enquirerReligion ? { label: formData.enquirerReligion, value: formData.enquirerReligion, } : null }
+                      onChange={(selected) => setFormData((prev) => ({ ...prev, enquirerReligion: selected ? selected.value : "", })) }
+                      placeholder="Select or type religion"
+                      isClearable
+                      styles={{ control: (base) => ({ ...base, backgroundColor: "#FFF0DD", borderColor: "#E5D4C1", borderRadius: "12px", padding: "7px 2px" }) }}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Age</label>
-                    <input
-                      type="number"
-                      name="enquirerAge"
-                      value={formData.enquirerAge}
-                      onChange={handleInputChange}
-                      placeholder="Your age"
-                      className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl text-gray-800 placeholder:text-gray-500 focus:outline-none focus:border-[#C4887C] focus:ring-2 focus:ring-[#C4887C]/20 transition-all"
+                    <input type="number" name="enquirerAge" value={formData.enquirerAge} onChange={handleInputChange} placeholder="Your age" className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl text-gray-800 placeholder:text-gray-500 focus:outline-none focus:border-[#C4887C] focus:ring-2 focus:ring-[#C4887C]/20 transition-all" />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                    <input type="tel" name="enquirerPhone" value={formData.enquirerPhone} onChange={handleInputChange} placeholder="Enter your phone number" className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl" />
+                  </div>
+
+                  {/* Caste Dropdown */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Caste</label>
+                    <CreatableSelect
+                      options={casteOptions}
+                      value={ formData.enquirerCaste ? { label: formData.enquirerCaste, value: formData.enquirerCaste, } : null }
+                      onChange={(selected) => setFormData((prev) => ({ ...prev, enquirerCaste: selected ? selected.value : "", }))}
+                      placeholder="Select or type caste"
+                      isClearable
+                      styles={{ control: (base) => ({ ...base, backgroundColor: "#FFF0DD", borderColor: "#E5D4C1", borderRadius: "12px", padding: "7px 2px", }),}}
                     />
+
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    name="enquirerPhone"
-                    value={formData.enquirerPhone}
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+                  <textarea
+                    name="enquirerDescription"
+                    value={formData.enquirerDescription}
                     onChange={handleInputChange}
-                    placeholder="Enter your phone number"
-                    className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl text-gray-800 placeholder:text-gray-500 focus:outline-none focus:border-[#C4887C] focus:ring-2 focus:ring-[#C4887C]/20 transition-all"
+                    placeholder="Write something about yourself or your requirement"
+                    rows={3}
+                    className="w-full px-4 py-3 bg-[#FFF0DD] border-2 border-[#E5D4C1] rounded-xl resize-none"
                   />
                 </div>
 
