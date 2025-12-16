@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { UserCheck, Search, Mail, LogOut, Menu, X } from "lucide-react";
+import { UserCheck, Search, Mail, LogOut, Menu, X, WavesLadder } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { showToast } from "nextjs-toast-notify";
@@ -15,6 +15,7 @@ const AdminLayout = ({ children }) => {
     { name: "Profiles", href: "/admin/profiles", icon: UserCheck },
     { name: "Find", href: "/admin/find", icon: Search },
     { name: "Enquiries", href: "/admin/enquiries", icon: Mail },
+    { name: "Registrations", href: "/admin/registrations", icon: WavesLadder },
   ];
 
   const handleLogout = () => {
