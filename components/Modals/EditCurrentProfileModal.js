@@ -14,8 +14,8 @@ import CreatableSelect from "react-select/creatable";
 import { listedCastes, listedReligions } from "../DemoData/ListedData";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
+import { API_BASE_URL } from "@/lib/api";
 
-const API_BASE_URL = "http://localhost:5000/api";
 
 const EditCurrentProfileModal = ({ isOpen, onClose, profile, onUpdate }) => {
   const [formData, setFormData] = useState({});

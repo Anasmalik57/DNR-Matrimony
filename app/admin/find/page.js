@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { Search, ChevronDown, Phone, MapPin } from "lucide-react";
 import Image from "next/image";
 import { listedCastes } from "@/components/DemoData/ListedData";
+import { API_BASE_URL } from "@/lib/api";
 
-const API_BASE_URL = "http://localhost:5000/api";
 
 const FindComponent = () => {
   const [profiles, setProfiles] = useState([]);

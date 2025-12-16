@@ -57,7 +57,7 @@ const AdminProfiles = () => {
       router.push("/");
       return;
     }
-    const shareUrl = `${window.location.origin}/profiles/slug/${profile.slug}`;
+    const shareUrl = `${window.location.origin}/profiles/${profile.slug}`;
     navigator.share?.({
       title: profile.fullName,
       url: shareUrl,

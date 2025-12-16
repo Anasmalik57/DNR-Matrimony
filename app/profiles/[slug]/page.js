@@ -7,8 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CreatableSelect from "react-select/creatable";
 import { listedCastes, listedReligions } from "@/components/DemoData/ListedData";
-
-const API_BASE_URL = "http://localhost:5000/api";
+import { API_BASE_URL } from "@/lib/api";
 
 const ProfileDetailPage = () => {
   const params = useParams();
