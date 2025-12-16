@@ -239,7 +239,7 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
-                <option value="">Select occupation</option>
+                {/* <option value="">Select occupation</option> */}
                 {occupations.map((occ) => (
                   <option key={occ} value={occ}>
                     {occ}
@@ -258,7 +258,7 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
-                <option value="">Select type</option>
+                {/* <option value="">Select type</option> */}
                 {marriageTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
