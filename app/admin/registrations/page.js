@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Search, Calendar, Phone, User, Hash, RefreshCw, Eye, Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
-const API_BASE_URL = "http://localhost:5000/api";
 
 const RegistrationsPage = () => {
   const router = useRouter();
