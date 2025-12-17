@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { occupations, marriageTypes } from "@/components/DemoData/Data";
 import { showToast } from "nextjs-toast-notify";
-import { listedCastes, listedReligions } from "@/components/DemoData/ListedData";
-import CreatableSelect from "react-select/creatable";
+import {
+  listedCastes,
+  listedReligions,
+} from "@/components/DemoData/ListedData";
 import { API_BASE_URL } from "@/lib/api";
-
 
 export default function RegistrationPage() {
   const [formData, setFormData] = useState({
@@ -22,14 +23,13 @@ export default function RegistrationPage() {
     dateOfBirth: "",
     age: "",
     caste: "",
+    customCaste: "",
     religion: "",
     city: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Caste & Religion Options
-  const casteOptions = listedCastes.map((c) => ({ label: c, value: c }));
   const religionOptions = listedReligions.map((r) => ({ label: r, value: r }));
 
   const handleChange = (e) => {
@@ -44,7 +44,10 @@ export default function RegistrationPage() {
         const birthDate = new Date(value);
         let age = today.getFullYear() - birthDate.getFullYear();
         const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        if (
+          monthDiff < 0 ||
+          (monthDiff === 0 && today.getDate() < birthDate.getDate())
+        ) {
           age--;
         }
         updated.age = age.toString();
@@ -73,15 +76,33 @@ export default function RegistrationPage() {
 
     for (const field of requiredFields) {
       if (!formData[field]) {
-        showToast.error(`Please fill ${field.replace(/([A-Z])/g, " $1").toLowerCase()}`, {
-          duration: 4000,
-          position: "top-center",
-        });
+        showToast.error(
+          `Please fill ${field.replace(/([A-Z])/g, " $1").toLowerCase()}`,
+          {
+            duration: 4000,
+            position: "top-center",
+          }
+        );
         return;
       }
     }
 
+    // Check if Other is selected but customCaste is empty
+    if (formData.caste === "Other" && !formData.customCaste) {
+      showToast.error("Please specify your caste", {
+        duration: 4000,
+        position: "top-center",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
+
+    const submitData = { ...formData };
+    if (formData.caste === "Other" && formData.customCaste) {
+      submitData.caste = formData.customCaste;
+    }
+    delete submitData.customCaste;
 
     try {
       const res = await fetch(`${API_BASE_URL}/registrations`, {
@@ -89,7 +110,7 @@ export default function RegistrationPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submitData),
       });
 
       if (!res.ok) {
@@ -120,14 +141,18 @@ export default function RegistrationPage() {
         dateOfBirth: "",
         age: "",
         caste: "",
+        customCaste: "",
         religion: "",
         city: "",
       });
     } catch (error) {
-      showToast.error(error.message || "Something went wrong. Please try again.", {
-        duration: 5000,
-        position: "top-center",
-      });
+      showToast.error(
+        error.message || "Something went wrong. Please try again.",
+        {
+          duration: 5000,
+          position: "top-center",
+        }
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -239,7 +264,6 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
-                {/* <option value="">Select occupation</option> */}
                 {occupations.map((occ) => (
                   <option key={occ} value={occ}>
                     {occ}
@@ -258,7 +282,6 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
-                {/* <option value="">Select type</option> */}
                 {marriageTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -330,61 +353,65 @@ export default function RegistrationPage() {
             </div>
           </div>
 
-          {/* Caste & Religion */}
+          {/* Religion & Caste */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Religion <span className="text-rose-600">*</span>
               </label>
-              <CreatableSelect
-                options={religionOptions}
-                value={formData.religion ? { label: formData.religion, value: formData.religion } : null}
-                onChange={(selected) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    religion: selected ? selected.value : "",
-                  }))
-                }
-                placeholder="Select or type religion"
-                isClearable
-                isDisabled={isSubmitting}
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: "12px",
-                    padding: "2px",
-                    borderColor: "#d1d5db",
-                  }),
-                }}
-              />
+              <select
+                name="religion"
+                value={formData.religion}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
+              >
+                <option value="">Select religion</option>
+                {listedReligions.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Caste <span className="text-rose-600">*</span>
               </label>
-              <CreatableSelect
-                options={casteOptions}
-                value={formData.caste ? { label: formData.caste, value: formData.caste } : null}
-                onChange={(selected) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    caste: selected ? selected.value : "",
-                  }))
-                }
-                placeholder="Select or type caste"
-                isClearable
-                isDisabled={isSubmitting}
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    borderRadius: "12px",
-                    padding: "2px",
-                    borderColor: "#d1d5db",
-                  }),
-                }}
-              />
+              <select
+                name="caste"
+                value={formData.caste}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
+              >
+                <option value="">Select caste</option>
+                {listedCastes.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
+
+          {/* Custom Caste Input - Only shows when "Other" is selected */}
+          {formData.caste === "Other" && (
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">
+                Specify Caste <span className="text-rose-600">*</span>
+              </label>
+              <input
+                type="text"
+                name="customCaste"
+                value={formData.customCaste}
+                onChange={handleChange}
+                placeholder="Enter your caste"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                disabled={isSubmitting}
+              />
+            </div>
+          )}
 
           {/* City */}
           <div>
