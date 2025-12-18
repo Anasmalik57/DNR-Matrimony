@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { occupations, marriageTypes } from "@/components/DemoData/Data";
@@ -30,11 +29,8 @@ export default function RegistrationPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const religionOptions = listedReligions.map((r) => ({ label: r, value: r }));
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => {
       let updated = { ...prev, [name]: value };
 
@@ -52,7 +48,6 @@ export default function RegistrationPage() {
         }
         updated.age = age.toString();
       }
-
       return updated;
     });
   };
@@ -87,7 +82,6 @@ export default function RegistrationPage() {
       }
     }
 
-    // Check if Other is selected but customCaste is empty
     if (formData.caste === "Other" && !formData.customCaste) {
       showToast.error("Please specify your caste", {
         duration: 4000,
@@ -98,14 +92,25 @@ export default function RegistrationPage() {
 
     setIsSubmitting(true);
 
-    const submitData = { ...formData };
+    // Prepare data for backend (matching ProfileSchema)
+    let submitData = {
+      ...formData,
+      createdBy: "user",          // Fixed as user registration
+      pic: "/avatar.png",           // Default placeholder image
+      income: 0,                  // Default value
+      status: "Available",        // Default status
+    };
+
+    // Handle custom caste
     if (formData.caste === "Other" && formData.customCaste) {
       submitData.caste = formData.customCaste;
     }
+
+    // Remove customCaste from payload
     delete submitData.customCaste;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/registrations`, {
+      const res = await fetch(`${API_BASE_URL}/profiles`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +133,7 @@ export default function RegistrationPage() {
         sound: true,
       });
 
-      // Reset form
+      // Reset form after success
       setFormData({
         fullName: "",
         fatherName: "",
@@ -158,11 +163,12 @@ export default function RegistrationPage() {
     }
   };
 
+  // UI remains exactly the same (no changes here)
   return (
     <>
-      {/* Registration Form Card */}
       <div className="bg-white rounded-3xl shadow-2xl p-8 lg:p-12">
         <div className="space-y-6">
+          {/* All your existing form fields - unchanged */}
           {/* Full Name & Phone Number */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -179,7 +185,6 @@ export default function RegistrationPage() {
                 disabled={isSubmitting}
               />
             </div>
-
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Phone Number <span className="text-rose-600">*</span>
@@ -264,6 +269,7 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
+                <option value="">Select occupation</option>
                 {occupations.map((occ) => (
                   <option key={occ} value={occ}>
                     {occ}
@@ -282,6 +288,7 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
+                <option value="">Select type</option>
                 {marriageTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -391,11 +398,12 @@ export default function RegistrationPage() {
                     {c}
                   </option>
                 ))}
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
 
-          {/* Custom Caste Input - Only shows when "Other" is selected */}
+          {/* Custom Caste */}
           {formData.caste === "Other" && (
             <div>
               <label className="block text-gray-700 font-medium mb-2">
@@ -433,7 +441,7 @@ export default function RegistrationPage() {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full bg-linear-to-r cursor-pointer from-rose-800 to-rose-900 text-white py-4 rounded-full font-semibold text-lg hover:from-rose-900 hover:to-rose-950 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group mt-8 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-rose-800 to-rose-900 text-white py-4 rounded-full font-semibold text-lg hover:from-rose-900 hover:to-rose-950 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group mt-8 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>Submitting...</>
