@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { occupations, marriageTypes } from "@/components/DemoData/Data";
 import { showToast } from "nextjs-toast-notify";
-import {
-  listedCastes,
-  listedReligions,
-} from "@/components/DemoData/ListedData";
+import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image"; // agar preview ke liye use kar rahe ho
+import { listedCastes, listedReligions } from "@/components/DemoData/ListedData";
 import { API_BASE_URL } from "@/lib/api";
 
 export default function RegistrationPage() {
@@ -25,9 +24,19 @@ export default function RegistrationPage() {
     customCaste: "",
     religion: "",
     city: "",
+    pic: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleUploadSuccess = (result) => {
+    const url = result?.info?.secure_url;
+    if (url) {
+      setFormData((prev) => ({ ...prev, pic: url }));
+    }
+    setIsUploading(false);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,10 +104,10 @@ export default function RegistrationPage() {
     // Prepare data for backend (matching ProfileSchema)
     let submitData = {
       ...formData,
-      createdBy: "user",          // Fixed as user registration
-      pic: "/avatar.png",           // Default placeholder image
-      income: 0,                  // Default value
-      status: "Available",        // Default status
+      createdBy: "user", // Fixed as user registration
+      pic: formData.pic || "/avatar.png", // Default placeholder image
+      income: 0, // Default value
+      status: "Available", // Default status
     };
 
     // Handle custom caste
@@ -231,6 +240,66 @@ export default function RegistrationPage() {
                 disabled={isSubmitting}
               />
             </div>
+          </div>
+          {/* Profile Photo Section */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">
+              Profile Photo{" "}
+              <span className="text-gray-500 text-sm">(Optional)</span>
+            </label>
+            <CldUploadWidget
+              uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
+              onQueuesStart={() => setIsUploading(true)}
+              onQueuesEnd={() => setIsUploading(false)}
+              onSuccess={handleUploadSuccess}
+            >
+              {({ open }) => (
+                <div
+                  onClick={() => open()}
+                  className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-rose-500 hover:bg-rose-50 transition-all"
+                >
+                  {isUploading ? (
+                    <div className="flex flex-col items-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-600 mb-4"></div>
+                      <p className="text-gray-600">Uploading...</p>
+                    </div>
+                  ) : formData.pic ? (
+                    <div className="space-y-4">
+                      <img
+                        src={formData.pic}
+                        alt="Preview"
+                        className="mx-auto h-32 w-32 object-cover rounded-full border-4 border-rose-200"
+                      />
+                      <p className="text-sm text-green-600">
+                        Photo uploaded successfully!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="mx-auto w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
+                        <svg
+                          className="w-12 h-12 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-gray-600">Click to upload photo</p>
+                      <p className="text-xs text-gray-500">
+                        If not uploaded, default avatar will be used
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CldUploadWidget>
           </div>
 
           {/* Education Qualification */}
