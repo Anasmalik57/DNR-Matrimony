@@ -4,10 +4,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "DNR Matrimony | Find Your Perfect Life Partner",
+  title: "DNR Matrimony | Find Your Perfect Match",
   description:
-    "DNR Matrimony ek trusted matrimony platform hai jahan aap apne liye perfect life partner dhoondh sakte hain. Verified profiles, secure matching aur personalized experience ke saath apna rishta yahin se shuru karein.",
+    "DNR Matrimony is a trusted matchmaking platform designed to help you find your perfect life partner. Discover verified profiles, secure connections, and meaningful relationships.",
 };
+
 
 export default function RootLayout({ children }) {
   return (
