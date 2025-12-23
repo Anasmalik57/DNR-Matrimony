@@ -35,7 +35,7 @@ export default function Hero() {
                 Find Your Perfect
               </h1>
               <h1 className="text-5xl lg:text-6xl  font-serif text-gray-900 leading-tight">
-                Telugu Match in Aandra & Telangana
+                Telugu Match in Aandra, Telangana & Karnataka
               </h1>
             </div>
 

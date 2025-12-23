@@ -45,7 +45,7 @@ export default function Footer() {
 
             {/* Description */}
             <p className="text-rose-100 leading-relaxed text-sm">
-              The most trusted matchmaking service for the Telugu community in Aandra-Pradesh and Telangana. We bring hearts together with tradition, privacy, and modern technology.
+              The most trusted matchmaking service for the Telugu community in Aandra-Pradesh, Telangana & Karnataka. We bring hearts together with tradition, privacy, and modern technology.
             </p>
 
             {/* Social Links */}
