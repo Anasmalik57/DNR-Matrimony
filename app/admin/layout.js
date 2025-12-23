@@ -15,7 +15,7 @@ const AdminLayout = ({ children }) => {
     { name: "Profiles", href: "/admin/profiles", icon: UserCheck },
     { name: "Find", href: "/admin/find", icon: Search },
     { name: "Enquiries", href: "/admin/enquiries", icon: Mail },
-    // { name: "Registrations", href: "/admin/registrations", icon: WavesLadder },
+    { name: "Contact Enquiries", href: "/admin/contact-enqs", icon: WavesLadder },
   ];
 
   const handleLogout = () => {
