@@ -8,7 +8,7 @@ const quickLinks = [
   { href: "/about", label: "About Us" },
   { href: "/services/testimonials", label: "Success Stories" },
   { href: "/services/termsNconditions", label: "Terms & Condition" },
-  { href: "/services/privacy", label: "Privacy Policy" },
+  // { href: "/services/privacy", label: "Privacy Policy" },
 ];
 
 const galleryImages = [
