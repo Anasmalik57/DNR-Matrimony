@@ -1,8 +1,10 @@
 "use client";
 import { values, features, milestones, } from "@/components/DemoData/AboutUsPageData";
 import { Heart, Users, Clock, Award, TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function AboutUsPage() {
+  const router = useRouter()
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-rose-50 to-pink-50 relative overflow-hidden">
       {/* Animated Background */}
@@ -161,8 +163,8 @@ export default function AboutUsPage() {
             <h2 className="text-3xl lg:text-5xl font-bold text-white">Ready to Find Your Perfect Match?</h2>
             <p className="text-white/90 text-lg max-w-2xl mx-auto">Join our family of 1000+ successful couples. Let us help you begin your journey to a happy married life.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 text-sm">
-              <button className="px-8 py-4 bg-white text-rose-800 rounded-full font-semibold  shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">Register Free Now</button>
-              <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold  hover:bg-white hover:text-rose-800 transition-all duration-300">Contact Us</button>
+              <button onClick={()=> router.push('/register')} className="px-8 py-4 bg-white text-rose-800 rounded-full font-semibold  shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">Register Free Now</button>
+              <button onClick={()=> router.push('/services/contactUs')} className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold  hover:bg-white hover:text-rose-800 transition-all duration-300">Contact Us</button>
             </div>
           </div>
         </div>
