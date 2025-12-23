@@ -1,14 +1,16 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { useState } from "react";
 import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 const contactInfo = [
   {
     id: 1,
     icon: MapPin,
     title: "Office Address",
-    detail: "Dno 17/661 RRL Colony, Alur Road Adoni, Kurnool dt, Andhra Pradesh",
+    detail:
+      "Dno 17/661 RRL Colony, Alur Road Adoni, Kurnool dt, Andhra Pradesh",
   },
   {
     id: 2,
@@ -32,16 +34,60 @@ export default function ContactUs() {
     message: "",
   });
 
-  const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    // Add your form submission logic here
-    alert("Thank you for contacting us! We'll get back to you soon.");
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("");
+
+  const handleSubmit = async () => {
+    // Basic client-side validation (optional but recommended)
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.message
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/contacts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Success:", result);
+
+        alert("Thank you for contacting us! We'll get back to you soon.");
+
+        // Reset form
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+        setSubmitStatus("success");
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Error:", errorData);
+        alert("Something went wrong. Please try again later.");
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Unable to connect. Please check your internet connection.");
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -88,7 +134,9 @@ export default function ContactUs() {
                 Get In Touch With Us
               </h2>
               <p className="text-gray-600 text-base leading-relaxed max-w-xl">
-                We are here to help you find your perfect match with comfort, trust, and genuine support—making your journey simple, meaningful, and stress-free.
+                We are here to help you find your perfect match with comfort,
+                trust, and genuine support—making your journey simple,
+                meaningful, and stress-free.
               </p>
             </div>
 
@@ -99,7 +147,10 @@ export default function ContactUs() {
                 return (
                   <div key={info.id} className="flex items-start gap-4">
                     <div className="shrink-0 size-12 bg-rose-800 rounded-full flex items-center justify-center shadow-lg">
-                      <IconComponent className="w-5 text-white" strokeWidth={2} />
+                      <IconComponent
+                        className="w-5 text-white"
+                        strokeWidth={2}
+                      />
                     </div>
                     <div className="pt-1">
                       <h3 className="text-base font-semibold text-gray-900 mb-1">
@@ -120,7 +171,10 @@ export default function ContactUs() {
             <div className="space-y-5">
               {/* Full Name */}
               <div>
-                <label htmlFor="fullName" className="block text-gray-800 font-medium mb-2">
+                <label
+                  htmlFor="fullName"
+                  className="block text-gray-800 font-medium mb-2"
+                >
                   Full Name
                 </label>
                 <input
@@ -137,7 +191,10 @@ export default function ContactUs() {
               {/* Email and Phone */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="email" className="block text-gray-800 font-medium mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-gray-800 font-medium mb-2"
+                  >
                     Email Address
                   </label>
                   <input
@@ -151,7 +208,10 @@ export default function ContactUs() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-gray-800 font-medium mb-2">
+                  <label
+                    htmlFor="phone"
+                    className="block text-gray-800 font-medium mb-2"
+                  >
                     Phone Number
                   </label>
                   <input
@@ -168,7 +228,10 @@ export default function ContactUs() {
 
               {/* Message */}
               <div>
-                <label htmlFor="message" className="block text-gray-800 font-medium mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-gray-800 font-medium mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -185,10 +248,13 @@ export default function ContactUs() {
               {/* Submit Button */}
               <button
                 onClick={handleSubmit}
+                disabled={isSubmitting}
                 className="w-full bg-rose-800 text-white py-3 rounded-full font-semibold text-lg hover:bg-rose-900 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group"
               >
-                Submit
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {isSubmitting ? "Submitting..." : "Submit"}
+                {!isSubmitting && (
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                )}
               </button>
             </div>
           </div>

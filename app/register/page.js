@@ -441,7 +441,7 @@ export default function RegistrationPage() {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-rose-800 to-rose-900 text-white py-4 rounded-full font-semibold text-lg hover:from-rose-900 hover:to-rose-950 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group mt-8 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-linear-to-r from-rose-800 to-rose-900 text-white py-4 rounded-full font-semibold text-lg hover:from-rose-900 hover:to-rose-950 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group mt-8 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>Submitting...</>
