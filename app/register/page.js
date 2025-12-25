@@ -5,7 +5,10 @@ import { occupations, marriageTypes } from "@/components/DemoData/Data";
 import { showToast } from "nextjs-toast-notify";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image"; // agar preview ke liye use kar rahe ho
-import { listedCastes, listedReligions } from "@/components/DemoData/ListedData";
+import {
+  listedCastes,
+  listedReligions,
+} from "@/components/DemoData/ListedData";
 import { API_BASE_URL } from "@/lib/api";
 
 export default function RegistrationPage() {
@@ -14,7 +17,6 @@ export default function RegistrationPage() {
     fatherName: "",
     motherName: "",
     educationQualification: "",
-    EmployementType: "",
     marriageType: "",
     phoneNumber: "",
     gender: "",
@@ -23,6 +25,9 @@ export default function RegistrationPage() {
     caste: "",
     customCaste: "",
     religion: "",
+    EmployementType: "",
+    customEmployementType: "",
+    customReligion: "",
     city: "",
     pic: "",
   });
@@ -91,8 +96,29 @@ export default function RegistrationPage() {
       }
     }
 
+    // caste check
     if (formData.caste === "Other" && !formData.customCaste) {
       showToast.error("Please specify your caste", {
+        duration: 4000,
+        position: "top-center",
+      });
+      return;
+    }
+    // Religion check
+    if (formData.religion === "Other" && !formData.customReligion) {
+      showToast.error("Please specify your religion", {
+        duration: 4000,
+        position: "top-center",
+      });
+      return;
+    }
+
+    // NAYA: EmployementType check
+    if (
+      formData.EmployementType === "Other" &&
+      !formData.customEmployementType
+    ) {
+      showToast.error("Please specify your employment type", {
         duration: 4000,
         position: "top-center",
       });
@@ -115,8 +141,23 @@ export default function RegistrationPage() {
       submitData.caste = formData.customCaste;
     }
 
-    // Remove customCaste from payload
+    // For religion
+    if (formData.religion === "Other" && formData.customReligion) {
+      submitData.religion = formData.customReligion;
+    }
+
+    // For EmployementType
+    if (
+      formData.EmployementType === "Other" &&
+      formData.customEmployementType
+    ) {
+      submitData.EmployementType = formData.customEmployementType;
+    }
+
+    // Remove customCaste/religion/employementType from payload
     delete submitData.customCaste;
+    delete submitData.customReligion;
+    delete submitData.customEmployementType;
 
     try {
       const res = await fetch(`${API_BASE_URL}/profiles`, {
@@ -156,6 +197,8 @@ export default function RegistrationPage() {
         age: "",
         caste: "",
         customCaste: "",
+        EmployementType: "",
+        customEmployementType: "",
         religion: "",
         city: "",
       });
@@ -338,7 +381,6 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
-                <option value="">Select occupation</option>
                 {occupations.map((occ) => (
                   <option key={occ} value={occ}>
                     {occ}
@@ -346,6 +388,7 @@ export default function RegistrationPage() {
                 ))}
               </select>
             </div>
+
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Marriage Type <span className="text-rose-600">*</span>
@@ -357,7 +400,6 @@ export default function RegistrationPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
                 disabled={isSubmitting}
               >
-                <option value="">Select type</option>
                 {marriageTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -365,6 +407,25 @@ export default function RegistrationPage() {
                 ))}
               </select>
             </div>
+
+            {/* Custom Working As */}
+            {formData.EmployementType === "Other" && (
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">
+                  Specify Employment Type{" "}
+                  <span className="text-rose-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="customEmployementType"
+                  value={formData.customEmployementType}
+                  onChange={handleChange}
+                  placeholder="Enter your employment type"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                  disabled={isSubmitting}
+                />
+              </div>
+            )}
           </div>
 
           {/* Gender */}
@@ -450,6 +511,7 @@ export default function RegistrationPage() {
                 ))}
               </select>
             </div>
+
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 Caste <span className="text-rose-600">*</span>
@@ -461,16 +523,31 @@ export default function RegistrationPage() {
                 disabled={isSubmitting}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all bg-white"
               >
-                <option value="">Select caste</option>
                 {listedCastes.map((c) => (
                   <option key={c} value={c}>
                     {c}
                   </option>
                 ))}
-                <option value="Other">Other</option>
               </select>
             </div>
           </div>
+          {/* Custom Religion */}
+          {formData.religion === "Other" && (
+            <div>
+              <label className="block text-gray-700 font-medium mb-2">
+                Specify Religion <span className="text-rose-600">*</span>
+              </label>
+              <input
+                type="text"
+                name="customReligion"
+                value={formData.customReligion}
+                onChange={handleChange}
+                placeholder="Enter your religion"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
+                disabled={isSubmitting}
+              />
+            </div>
+          )}
 
           {/* Custom Caste */}
           {formData.caste === "Other" && (
