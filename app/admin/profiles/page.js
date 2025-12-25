@@ -28,7 +28,7 @@ const AdminProfiles = () => {
       const data = await res.json();
       if (data.success) {
         setProfiles(data.data);
-        console.log("Fetched profiles:", data.data);
+        // console.log("Fetched profiles:", data.data);
       }
     } catch (error) {
       console.error("Error fetching profiles:", error);

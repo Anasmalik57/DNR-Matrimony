@@ -63,7 +63,7 @@ export default function ContactUs() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Success:", result);
+        // console.log("Success:", result);
 
         alert("Thank you for contacting us! We'll get back to you soon.");
 

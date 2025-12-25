@@ -114,7 +114,7 @@ const ProfileDetailByIDPage = () => {
       }
 
       const data = await res.json();
-      console.log("Enquiry Submitted:", data.data);
+      // console.log("Enquiry Submitted:", data.data);
 
       alert("Enquiry submitted successfully!");
 
