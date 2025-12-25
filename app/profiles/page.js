@@ -3,14 +3,17 @@
 import React, { useState, useEffect } from "react";
 import {
   User,
+  Heart,
+  Search,
   MapPin,
+  FilterIcon,
   Briefcase,
   IndianRupee,
-  Search,
   Filter,
   Sparkles,
   TrendingUp,
   Award,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,6 +32,19 @@ const ProfilesListingPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [selectedCity, setSelectedCity] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
+
+  const hasActiveFilters =
+    searchTerm !== "" ||
+    selectedGender !== "All" ||
+    selectedStatus !== "All" ||
+    selectedCity !== "All";
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedGender("All");
+    setSelectedStatus("All");
+    setSelectedCity("All");
+  };
 
   // Fetch all profiles
   useEffect(() => {
@@ -163,7 +179,7 @@ const ProfilesListingPage = () => {
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
-              <Filter className="w-4 h-4" />
+              <FilterIcon className="w-4 h-4" />
               Filters
             </button>
           </div>
