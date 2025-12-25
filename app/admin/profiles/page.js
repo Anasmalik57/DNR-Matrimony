@@ -247,7 +247,7 @@ const AdminProfiles = () => {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex px-2.5 py-1 rounded-md text-xs font-medium ${
+                        className={`inline-flex px-2.5 py-1 rounded-md text-[10px] font-medium ${
                           profile.status === "Available"
                             ? "bg-green-500/10 text-green-400 border border-green-500/20"
                             : "bg-red-500/10 text-red-400 border border-red-500/20"
