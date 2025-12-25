@@ -1,17 +1,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, ChevronDown, Phone, MapPin } from "lucide-react";
+import { Search, ChevronDown, Phone, MapPin, EyeIcon } from "lucide-react";
 import Image from "next/image";
 import { listedCastes } from "@/components/DemoData/ListedData";
 import { API_BASE_URL } from "@/lib/api";
-
+import { useRouter } from "next/navigation";
 
 const FindComponent = () => {
   const [profiles, setProfiles] = useState([]);
   const [filteredProfiles, setFilteredProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -49,7 +50,9 @@ const FindComponent = () => {
     const applyFilters = () => {
       const filtered = profiles.filter((profile) => {
         const matchSearch =
-          profile.fullName.toLowerCase().includes(filters.search.toLowerCase()) ||
+          profile.fullName
+            .toLowerCase()
+            .includes(filters.search.toLowerCase()) ||
           profile.phoneNumber.includes(filters.search);
 
         const matchMinAge =
@@ -84,8 +87,20 @@ const FindComponent = () => {
   };
 
   // Get unique values for dropdowns
-  const uniqueGenders = [...new Set(profiles.map((p) => p.gender))].filter(Boolean);
-  const uniqueCities = [...new Set(profiles.map((p) => p.city))].filter(Boolean);
+  const uniqueGenders = [...new Set(profiles.map((p) => p.gender))].filter(
+    Boolean
+  );
+  const uniqueCities = [...new Set(profiles.map((p) => p.city))].filter(
+    Boolean
+  );
+
+  // ===========================================================================
+
+  const handleView = (profile) => {
+    router.push(`/profiles/${profile.slug}`);
+  };
+
+  // ===========================================================================
 
   if (loading) {
     return (
@@ -267,6 +282,12 @@ const FindComponent = () => {
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     Phone
                   </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    View
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -330,6 +351,20 @@ const FindComponent = () => {
                         <Phone className="size-3.5 text-gray-500" />
                         {profile.phoneNumber}
                       </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${ profile.status === "Available" ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20" }`}>
+                        {profile.status}
+                      </span>
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleView(profile)}
+                        className="px-3 py-1.5 text-xs font-semibold cursor-pointer border border-white/20 rounded-full bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all"
+                      >
+                        <EyeIcon className="size-4" />
+                      </button>
                     </td>
                   </tr>
                 ))}
