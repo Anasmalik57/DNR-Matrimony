@@ -7,7 +7,6 @@ import EditCurrentProfileModal from "@/components/Modals/EditCurrentProfileModal
 import CreateProfileModal from "@/components/Modals/CreateProfileModal";
 import { API_BASE_URL } from "@/lib/api";
 
-
 const AdminProfiles = () => {
   const router = useRouter();
   const [profiles, setProfiles] = useState([]);
@@ -76,7 +75,9 @@ const AdminProfiles = () => {
           EmployementType: newProfile.employmentType, // match schema spelling
           marriageType: "Arranged", // if required, adjust as needed
           educationQualification: "Not Specified", // optional fallback
-          dateOfBirth: new Date(Date.now() - newProfile.age * 365 * 24 * 3600 * 1000).toISOString(), // approx DOB
+          dateOfBirth: new Date(
+            Date.now() - newProfile.age * 365 * 24 * 3600 * 1000
+          ).toISOString(), // approx DOB
         }),
       });
 
@@ -87,10 +88,10 @@ const AdminProfiles = () => {
       }
     } catch (error) {
       console.error("Error creating profile:", error);
-    }
-    finally {
+    } finally {
       await fetchProfiles();
-      setIsCreateModalOpen(false);}
+      setIsCreateModalOpen(false);
+    }
   };
 
   const handleEdit = (profile) => {
@@ -100,14 +101,17 @@ const AdminProfiles = () => {
 
   const handleUpdateProfile = async (updatedProfile) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/profiles/${updatedProfile._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...updatedProfile,
-          EmployementType: updatedProfile.employmentType,
-        }),
-      });
+      const res = await fetch(
+        `${API_BASE_URL}/profiles/${updatedProfile._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...updatedProfile,
+            EmployementType: updatedProfile.employmentType,
+          }),
+        }
+      );
 
       const data = await res.json();
       if (data.success) {
@@ -147,7 +151,9 @@ const AdminProfiles = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-white mb-1">Profiles</h1>
-            <p className="text-gray-400 text-sm">Manage and track all profiles</p>
+            <p className="text-gray-400 text-sm">
+              Manage and track all profiles
+            </p>
           </div>
 
           <button
@@ -218,17 +224,27 @@ const AdminProfiles = () => {
                     key={profile._id}
                     className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors group"
                   >
-                    <td className="px-6 py-4 text-sm text-gray-400">{index + 1}</td>
+                    <td className="px-6 py-4 text-sm text-gray-400">
+                      {index + 1}
+                    </td>
                     <td className="px-6 py-4 text-sm font-medium text-white">
                       {profile.fullName}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-300 font-mono">
                       {profile.phoneNumber}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-300">{profile.gender}</td>
-                    <td className="px-6 py-4 text-sm text-gray-300">{profile.age}</td>
-                    <td className="px-6 py-4 text-sm text-gray-300">{profile.caste}</td>
-                    <td className="px-6 py-4 text-sm text-gray-300">{profile.city}</td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {profile.gender}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {profile.age}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {profile.caste}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">
+                      {profile.city}
+                    </td>
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex px-2.5 py-1 rounded-md text-xs font-medium ${
@@ -261,11 +277,21 @@ const AdminProfiles = () => {
                         </button>
                         <button
                           onClick={() => handleShare(profile)}
-                          className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all"
-                          title="Share"
+                          disabled={profile.status !== "Available"}
+                          className={`p-2 rounded-lg transition-all ${
+                            profile.status === "Available"
+                              ? "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
+                              : "bg-gray-700 text-gray-500 cursor-not-allowed opacity-50"
+                          }`}
+                          title={
+                            profile.status === "Available"
+                              ? "Share"
+                              : "Profile is unavailable"
+                          }
                         >
                           <Share2 className="size-4" />
                         </button>
+
                         <button
                           onClick={() => handleDelete(profile._id)}
                           className="p-2 rounded-lg bg-gray-800 text-red-400 hover:bg-red-950/50 hover:text-red-300 transition-all"
