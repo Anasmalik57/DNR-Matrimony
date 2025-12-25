@@ -28,7 +28,7 @@ const testimonials = [
   {
     id: 4,
     image: "/corousalimage4.png",
-    quote: "Best matrimony platform for Telugu community in Aandra, Telangana & Karnataka. Professional, secure, and effective. Highly recommend to everyone looking for their life partner.",
+    quote: "Best matrimony platform for Telugu community in Andra, Telangana & Karnataka. Professional, secure, and effective. Highly recommend to everyone looking for their life partner.",
     name: "Venkat Reddy",
     rating: 5,
   },
